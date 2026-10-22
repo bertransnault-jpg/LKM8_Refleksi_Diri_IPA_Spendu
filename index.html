@@ -141,6 +141,29 @@ footer{text-align:center;color:var(--muted);font-size:.8rem;padding:20px 10px}
     <div class="track"><div class="bar" id="progressBar"></div></div>
   </div>
 
+  <!-- KARTU BUKTI SELESAI (SCREENSHOT CARD) -->
+  <section class="card" id="successCard" style="display:none; text-align:center; padding: 32px 20px;">
+    <div style="font-size: 3.5rem; margin-bottom: 12px;">🎉</div>
+    <h2 style="color: var(--teal); font-size: 1.6rem; margin-bottom: 6px;">LKM 8 Refleksi Diri IPA — Done!</h2>
+    <p style="color: var(--muted); margin-bottom: 24px;">Terima kasih atas partisipasi, kejujuran, dan semangat belajarmu.</p>
+    
+    <div style="background: var(--pale); border: 2px solid var(--teal2); border-radius: 18px; padding: 22px; margin: 0 auto 20px; max-width: 440px; text-align: left; box-shadow: 0 4px 14px #0f766e10;">
+      <p style="margin: 8px 0; font-size: 0.95rem;"><strong>👤 Nama Siswa:</strong> <span id="resNama" style="color: var(--ink);"></span></p>
+      <p style="margin: 8px 0; font-size: 0.95rem;"><strong>🏫 Kelas:</strong> <span id="resKelas" style="color: var(--ink);"></span></p>
+      <p style="margin: 8px 0; font-size: 0.95rem;"><strong>📌 Status:</strong> ✅ <span style="color: #17613b; font-weight: 800;">LKM 8 Refleksi Done</span></p>
+      <p style="margin: 8px 0 0; font-size: 0.82rem; color: var(--muted); border-top: 1px dashed #bce3dc; padding-top: 8px;" id="resWaktu"></p>
+    </div>
+
+    <div style="background: #fff8e6; border: 1px solid #f2d3a0; border-radius: 12px; padding: 12px 16px; max-width: 440px; margin: 0 auto 24px; font-size: 0.88rem; color: #7c4a03;">
+      📸 <strong>Silakan lakukan Screenshot (Tangkapan Layar)</strong> pada bagian kartu di atas sebagai bukti pengumpulan tugas kepada guru Anda.
+    </div>
+
+    <div class="actions" style="justify-content: center; gap: 12px;">
+      <button class="secondary" type="button" id="downloadBtnDone">↓ Unduh Jawaban (.txt)</button>
+      <button class="primary" type="button" id="newBtn">↺ Isi Refleksi Baru</button>
+    </div>
+  </section>
+
   <form id="reflectionForm" onsubmit="return false">
     <section class="card">
       <div class="sectionhead"><div class="num">01</div><div><h2>Identitas Murid</h2><p>Isi identitasmu sebelum memulai refleksi.</p></div></div>
@@ -224,7 +247,6 @@ footer{text-align:center;color:var(--muted);font-size:.8rem;padding:20px 10px}
         <button class="primary" type="submit" id="submitBtn">✓ Selesaikan Refleksi</button>
         <button class="secondary" type="button" id="downloadBtn">↓ Unduh Jawaban (.txt)</button>
         <button class="soft" type="button" id="printBtn">▣ Cetak / Simpan PDF</button>
-        <button class="secondary" type="button" id="newBtn" style="display:none">+ Isi Refleksi Baru</button>
         <button class="dark" type="button" id="openTeacherBtn">🔑 Dashboard Guru</button>
       </div>
       <div class="status" id="status" role="status"></div>
@@ -467,9 +489,15 @@ form.addEventListener('submit', async e => {
     record.createdAt = FB.fsM.serverTimestamp();
     await FB.fsM.addDoc(FB.fsM.collection(FB.db, COLLECTION), record);
     ok = true;
-    showStatus('Berhasil! Refleksimu sudah terkirim. Terima kasih sudah menjawab dengan jujur 🌱');
-    submitBtn.textContent = '✓ Terkirim';
-    $('newBtn').style.display = 'inline-block';
+    
+    // TAMPILKAN KARTU BUKTI SELESAI (SCREENSHOT CARD)
+    $('resNama').textContent = record.nama || '-';
+    $('resKelas').textContent = record.kelas || '-';
+    $('resWaktu').textContent = 'Waktu Kirim: ' + new Date().toLocaleString('id-ID', {dateStyle:'medium', timeStyle:'short'});
+    
+    form.style.display = 'none';
+    $('successCard').style.display = 'block';
+    $('successCard').scrollIntoView({behavior:'smooth'});
   }catch(err){
     console.error(err);
     const code = err && err.code ? err.code : '';
@@ -490,7 +518,8 @@ $('newBtn').addEventListener('click', () => {
   $('tanggal').value = todayLocal();
   updateProgress();
   statusBox.style.display = 'none';
-  $('newBtn').style.display = 'none';
+  $('successCard').style.display = 'none';
+  form.style.display = 'block';
   submitBtn.disabled = false;
   submitBtn.textContent = '✓ Selesaikan Refleksi';
   window.scrollTo({top:0, behavior:'smooth'});
@@ -506,17 +535,28 @@ function download(filename, text, mime){
   setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
 
-$('downloadBtn').addEventListener('click', () => {
+function generateTxtContent(){
   const fd = new FormData(form);
   const names = [...new Set([...form.elements].filter(e => e.name).map(e => e.name))];
-  const lines = ['LKM 8 | Refleksi Diri IPA', 'SMP Negeri 2 Belang • IPA Kelas VIII', ''];
+  const lines = ['LKM 8 | Refleksi Diri IPA', 'SMP Negeri 2 Belang • IPA Kelas VIII', 'Status: LKM 8 Refleksi Done ✅', ''];
   names.forEach(n => {
     const vals = fd.getAll(n).map(v => String(v).trim()).filter(Boolean);
     lines.push(n + ': ' + (vals.length ? vals.join('; ') : '-'));
     lines.push('');
   });
-  const nm = (String(fd.get('Nama lengkap') || '').trim() || 'Siswa').replace(/[^\p{L}\p{N}]+/gu, '_').slice(0, 40);
-  download('Refleksi_IPA_' + nm + '.txt', lines.join('\r\n'), 'text/plain;charset=utf-8');
+  return lines.join('\r\n');
+}
+
+$('downloadBtn').addEventListener('click', () => {
+  const txt = generateTxtContent();
+  const nm = (String($('nama').value || '').trim() || 'Siswa').replace(/[^\p{L}\p{N}]+/gu, '_').slice(0, 40);
+  download('Refleksi_IPA_' + nm + '.txt', txt, 'text/plain;charset=utf-8');
+});
+
+$('downloadBtnDone').addEventListener('click', () => {
+  const txt = generateTxtContent();
+  const nm = (String($('nama').value || '').trim() || 'Siswa').replace(/[^\p{L}\p{N}]+/gu, '_').slice(0, 40);
+  download('Refleksi_IPA_' + nm + '.txt', txt, 'text/plain;charset=utf-8');
 });
 
 $('printBtn').addEventListener('click', () => window.print());
