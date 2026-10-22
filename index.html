@@ -195,12 +195,13 @@ const firebaseConfig = {
   projectId: "lkm8refleksi",
   storageBucket: "lkm8refleksi.firebasestorage.app",
   messagingSenderId: "220297236574",
-  appId: "1:220297236574:web:2aa50adb941c88b18964cf"
+  appId: "1:220297236574:web:5fe34e5aa5fe048f8964cf"
 };
 
 let db = null;
 let firebaseReady = false;
 let firebaseSetupMessage = "";
+
 try {
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
@@ -209,7 +210,7 @@ try {
   firebaseReady = true;
 } catch (error) {
   console.error("Firebase initialization error:", error);
-  firebaseSetupMessage = "Koneksi Firebase belum siap. Periksa konfigurasi dan pengaturan Authentication.";
+  firebaseSetupMessage = "Koneksi Firebase belum siap: " + error.message;
 }
 
 const form=document.getElementById('reflectionForm');
@@ -258,9 +259,9 @@ function makeText(){
     'Dukungan yang dibutuhkan':'Dukungan yang dibutuhkan','Pesan untuk guru':'Pesan untuk guru',
     'Keyakinan menjelaskan':'Keyakinan menjelaskan materi'
   };
-  let out='LKM 8 — REFLEKSI DIRI PEMBELAJARAN IPA\\nSMP NEGERI 2 BELANG | KELAS VIII | TAHUN PELAJARAN 2026/2027\\n'+'='.repeat(56)+'\\n';
-  for(const [key,value] of Object.entries(d))out+='\\n'+(labels[key]||key)+':\\n'+(Array.isArray(value)?value.join(', '):value)+'\\n';
-  out+='\\n'+'='.repeat(56)+'\\nDibuat dari lembar refleksi HTML pada perangkat murid.\\n';
+  let out='LKM 8 — REFLEKSI DIRI PEMBELAJARAN IPA\nSMP NEGERI 2 BELANG | KELAS VIII | TAHUN PELAJARAN 2026/2027\n'+'='.repeat(56)+'\n';
+  for(const [key,value] of Object.entries(d))out+='\n'+(labels[key]||key)+':\n'+(Array.isArray(value)?value.join(', '):value)+'\n';
+  out+='\n'+'='.repeat(56)+'\nDibuat dari lembar refleksi HTML pada perangkat murid.\n';
   return out;
 }
 
@@ -304,10 +305,13 @@ form.addEventListener('submit', async e=>{
     };
     await addDoc(collection(db, "lkm8_refleksi"), record);
     statusBox.textContent = "Berhasil! Refleksimu sudah tersimpan. Kamu dapat mengunduh salinan jawaban atau mencetaknya.";
+    statusBox.style.background = "#e9f8f0";
+    statusBox.style.borderColor = "#b8e7cc";
+    statusBox.style.color = "#17613b";
     statusBox.scrollIntoView({behavior:'smooth',block:'center'});
   } catch (error) {
     console.error("Gagal menyimpan refleksi:", error);
-    statusBox.textContent = "Jawaban belum berhasil dikirim. " + (error.message || "Periksa koneksi internet dan konfigurasi Firebase, lalu coba lagi. Kamu tetap bisa mengunduh jawaban sebagai cadangan.");
+    statusBox.textContent = "Jawaban belum berhasil dikirim. " + (error.message || "Periksa koneksi internet dan konfigurasi Firebase, lalu coba lagi.");
     statusBox.style.background = "#fff4e5";
     statusBox.style.borderColor = "#f0d29c";
     statusBox.style.color = "#7c4a03";
