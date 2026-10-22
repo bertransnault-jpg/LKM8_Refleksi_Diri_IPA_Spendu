@@ -191,8 +191,8 @@ import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.g
 
 /*
   PENTING:
-  1. Ganti nilai placeholder di bawah dengan konfigurasi aplikasi Web Firebase Anda.
-  2. Jangan pernah memasukkan service-account key / private key ke file HTML.
+  1. Konfigurasi Firebase sudah terpasang dengan benar.
+  2. Pastikan Anonymous Authentication sudah diaktifkan di Firebase Console.
 */
 const firebaseConfig = {
   apiKey: "AIzaSyAlDyAkJbtrjJSm42IXD5mzhKxE9unhTtQ",
@@ -282,7 +282,6 @@ form.addEventListener('submit', async e=>{
       throw new Error(firebaseSetupMessage || "Firebase belum siap. Periksa konfigurasi Firebase.");
     }
     const d = collect();
-    // Simpan jawaban yang diperlukan untuk rekap guru. Waktu dibuat oleh server.
     const record = {
       nama: String(d["Nama lengkap"] || "").trim().slice(0, 120),
       kelas: String(d["Kelas"] || "").slice(0, 30),
