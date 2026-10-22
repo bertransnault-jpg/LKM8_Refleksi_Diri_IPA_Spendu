@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0f766e">
 <title>LKM 8 | Refleksi Diri IPA</title>
-<!-- Chart.js untuk Memuat Grafik -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<!-- Chart.js dikunci ke versi tertentu agar tampilan tidak berubah saat ada pembaruan -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
 <style>
 :root{--ink:#18323b;--muted:#61747b;--teal:#0f766e;--teal2:#14b8a6;--pale:#e9f8f5;--line:#dce8e8;--paper:#fff;--bg:#f2f7f7;--gold:#f4b942;--rose:#fce7e7}
 *{box-sizing:border-box}
@@ -32,7 +32,7 @@ body{margin:0;background:radial-gradient(circle at 8% 0%,#d9f5ef 0,transparent 3
 .sectionhead p{margin:0;color:var(--muted);font-size:.88rem}
 label.fieldlabel,.question-title{display:block;font-weight:750;font-size:.94rem;margin-bottom:8px}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-input[type=text],input[type=date],input[type=password],textarea,select{width:100%;border:1px solid #cfdddd;border-radius:12px;padding:12px 13px;font:inherit;color:var(--ink);background:#fcfefe;outline:none;transition:border .15s,box-shadow .15s}
+input[type=text],input[type=date],input[type=password],input[type=email],textarea,select{width:100%;border:1px solid #cfdddd;border-radius:12px;padding:12px 13px;font:inherit;color:var(--ink);background:#fcfefe;outline:none;transition:border .15s,box-shadow .15s}
 input:focus,textarea:focus,select:focus{border-color:var(--teal2);box-shadow:0 0 0 3px #14b8a61c}
 textarea{min-height:94px;resize:vertical}
 .q{padding:16px 0;border-top:1px solid #edf2f2}.q:first-of-type{border-top:0;padding-top:0}.q:last-child{padding-bottom:0}
@@ -42,11 +42,14 @@ textarea{min-height:94px;resize:vertical}
 .opt input{position:absolute;opacity:0;pointer-events:none}
 .opt span{height:100%;min-height:45px;display:flex;align-items:center;justify-content:center;text-align:center;padding:10px 8px;border:1px solid #d7e3e3;border-radius:12px;background:#fbfdfd;font-size:.86rem;transition:.15s}
 .opt input:checked+span{background:var(--pale);border-color:var(--teal);color:#075e57;box-shadow:inset 0 0 0 1px var(--teal);font-weight:800}
-.topic{display:grid;grid-template-columns:minmax(0,1fr) minmax(180px,1.1fr);gap:12px;align-items:center;padding:12px 0;border-top:1px solid #edf2f2}
+.opt input:focus-visible+span{box-shadow:0 0 0 3px #14b8a62e}
+.legend{font-size:.82rem;color:var(--muted);background:#f6fbfa;border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin-bottom:6px}
+.topic{display:grid;grid-template-columns:minmax(0,1fr) minmax(220px,1.2fr);gap:12px;align-items:center;padding:12px 0;border-top:1px solid #edf2f2}
 .topic:first-of-type{border-top:0}.topicname{font-weight:750;font-size:.92rem}.topicname span{display:block;color:var(--muted);font-size:.78rem;font-weight:450}
-.topic select{padding:10px;font-size:.88rem}
+.topic .options{grid-template-columns:repeat(2,minmax(0,1fr));margin-top:0}
 .emojirow{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
 .emoji{position:relative}.emoji input{position:absolute;opacity:0}.emoji label{cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:5px;border:1px solid var(--line);border-radius:14px;padding:12px 4px;font-size:.76rem;color:var(--muted);text-align:center;height:100%}.emoji .face{font-size:1.7rem}.emoji input:checked+label{border-color:var(--teal);background:var(--pale);color:#075e57;box-shadow:inset 0 0 0 1px var(--teal)}
+.emoji input:focus-visible+label{box-shadow:0 0 0 3px #14b8a62e}
 .checkgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .checkitem{display:flex;align-items:flex-start;gap:10px;padding:12px;border:1px solid var(--line);border-radius:12px;background:#fcfefe;font-size:.9rem;cursor:pointer}
 .checkitem input{margin-top:5px;accent-color:var(--teal);width:17px;height:17px;flex:0 0 auto}
@@ -54,27 +57,65 @@ textarea{min-height:94px;resize:vertical}
 .actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px}
 button{border:0;border-radius:13px;padding:13px 17px;font:inherit;font-weight:800;cursor:pointer;transition:transform .15s,filter .15s}
 button:hover{filter:brightness(.97);transform:translateY(-1px)}button:active{transform:translateY(0)}
+button:disabled{opacity:.6;cursor:not-allowed;transform:none}
 .primary{background:var(--teal);color:white;box-shadow:0 7px 16px #0f766e25}.secondary{background:white;border:1px solid #cbdada;color:var(--ink)}.soft{background:#e7f6f3;color:#075e57}.dark{background:#18323b;color:white}
-.status{display:none;margin-top:14px;padding:12px 14px;background:#e9f8f0;border:1px solid #b8e7cc;color:#17613b;border-radius:12px;font-size:.9rem}
+.status{display:none;margin-top:14px;padding:12px 14px;border-radius:12px;font-size:.9rem;background:#e9f8f0;border:1px solid #b8e7cc;color:#17613b}
+.status.warn{background:#fff4e5;border-color:#f2d3a0;color:#7c4a03}
 footer{text-align:center;color:var(--muted);font-size:.8rem;padding:20px 10px}
 .required{color:#c2413b}
 
-/* CSS DASHBOARD GURU */
+/* LOGIN GURU */
+#loginPanel{display:none;border:2px solid var(--teal)}
+#loginPanel .grid2{margin-top:6px}
+.loginmsg{display:none;margin-top:12px;padding:10px 12px;border-radius:12px;background:#fff4e5;border:1px solid #f2d3a0;color:#7c4a03;font-size:.88rem}
+
+/* DASHBOARD GURU */
 #teacherPanel{display:none;border:2px solid var(--teal);background:#fff;margin-top:30px}
-.teacher-header{display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid var(--line);padding-bottom:12px;margin-bottom:20px}
+.teacher-header{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;border-bottom:2px solid var(--line);padding-bottom:12px;margin-bottom:20px}
+.teacher-header .btns{display:flex;flex-wrap:wrap;gap:8px}
+.filterbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:18px}
+.filterbar label{font-weight:750;font-size:.9rem}
+.filterbar select{width:auto;min-width:170px}
 .chart-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:25px}
-.chart-box{background:#f8fcfc;border:1px solid var(--line);border-radius:16px;padding:15px}
+.chart-box{background:#f8fcfc;border:1px solid var(--line);border-radius:16px;padding:15px;min-width:0}
+.chart-box.full{grid-column:1/-1}
 .chart-box h3{font-size:1rem;margin:0 0 12px;color:var(--teal)}
 .action-box{background:#fff8e6;border:1px solid #f2e2b3;border-radius:16px;padding:18px;margin-bottom:25px;color:#61460b}
 .action-box h3{margin:0 0 10px;color:#8a6006;display:flex;align-items:center;gap:8px}
 .action-list{margin:0;padding-left:20px;font-size:.92rem;line-height:1.6}
+.action-list ul{margin:4px 0 0;padding-left:20px}
 .table-wrapper{overflow-x:auto;margin-top:15px}
-.student-table{width:100%;border-collapse:collapse;font-size:.85rem}
-.student-table th,.student-table td{border:1px solid var(--line);padding:9px;text-align:left}
-.student-table th{background:var(--pale);color:var(--teal);font-weight:800}
+.student-table{width:100%;border-collapse:collapse;font-size:.82rem}
+.student-table th,.student-table td{border:1px solid var(--line);padding:8px;text-align:left;vertical-align:top}
+.student-table th{background:var(--pale);color:var(--teal);font-weight:800;white-space:nowrap}
 .student-table tr:nth-child(even){background:#fbfdfd}
+.student-table td.lv-sp{background:#c9f1e6;font-weight:700}
+.student-table td.lv-p{background:#e4f7f1}
+.student-table td.lv-mp{background:#fff1cf}
+.student-table td.lv-bp{background:#fbd5d5;font-weight:700}
+.muted{color:var(--muted);font-size:.86rem}
 
-@media(max-width:768px){.chart-grid{grid-template-columns:1fr}.wrap{width:min(100% - 18px,980px)}}
+@media(max-width:768px){.chart-grid{grid-template-columns:1fr}.chart-box.full{grid-column:auto}.wrap{width:min(100% - 18px,980px)}}
+@media(max-width:640px){
+  .grid2,.checkgrid{grid-template-columns:1fr}
+  .options,.options.three{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .emojirow{grid-template-columns:repeat(3,1fr)}
+  .topic{grid-template-columns:1fr}
+  .hero{padding:22px}
+}
+
+/* CETAK */
+@media print{
+  body{background:#fff}
+  .actions,#loginPanel,.noprint{display:none!important}
+  #teacherPanel{display:none!important}
+  .card{box-shadow:none}
+  body.print-teacher .wrap>*:not(#teacherPanel){display:none!important}
+  body.print-teacher #teacherPanel{display:block!important;border:0;margin:0;padding:0}
+  body.print-teacher .table-wrapper{overflow:visible}
+  body.print-teacher .student-table{font-size:.7rem}
+  body.print-teacher .chart-box,body.print-teacher .action-box{break-inside:avoid}
+}
 </style>
 </head>
 <body>
@@ -100,21 +141,21 @@ footer{text-align:center;color:var(--muted);font-size:.8rem;padding:20px 10px}
     <div class="track"><div class="bar" id="progressBar"></div></div>
   </div>
 
-  <form id="reflectionForm">
+  <form id="reflectionForm" onsubmit="return false">
     <section class="card">
       <div class="sectionhead"><div class="num">01</div><div><h2>Identitas Murid</h2><p>Isi identitasmu sebelum memulai refleksi.</p></div></div>
       <div class="grid2">
-        <div><label class="fieldlabel" for="nama">Nama lengkap <span class="required">*</span></label><input id="nama" name="Nama lengkap" type="text" placeholder="Tulis nama lengkapmu" required></div>
+        <div><label class="fieldlabel" for="nama">Nama lengkap <span class="required">*</span></label><input id="nama" name="Nama lengkap" type="text" maxlength="80" placeholder="Tulis nama lengkapmu" required></div>
         <div><label class="fieldlabel" for="kelas">Kelas <span class="required">*</span></label><select id="kelas" name="Kelas" required><option value="">Pilih kelas</option><option>VIII A</option><option>VIII B</option><option>VIII C</option><option>Lainnya</option></select></div>
         <div><label class="fieldlabel" for="tanggal">Tanggal refleksi</label><input id="tanggal" name="Tanggal refleksi" type="date"></div>
-        <div><label class="fieldlabel" for="kelompok">Kelompok (jika ada)</label><input id="kelompok" name="Kelompok" type="text" placeholder="Contoh: Kelompok 3"></div>
+        <div><label class="fieldlabel" for="kelompok">Kelompok (jika ada)</label><input id="kelompok" name="Kelompok" type="text" maxlength="50" placeholder="Contoh: Kelompok 3"></div>
       </div>
     </section>
 
     <section class="card">
       <div class="sectionhead"><div class="num">02</div><div><h2>Bagaimana Perasaanmu?</h2><p>Pilih satu jawaban yang paling menggambarkan pengalaman belajarmu.</p></div></div>
       <div class="q">
-        <div class="question-title">Setelah mempelajari materi-materi ini, bagaimana perasaanmu?</div>
+        <div class="question-title">Setelah mempelajari materi gizi dan sistem organ manusia ini, bagaimana perasaanmu? <span class="required">*</span></div>
         <div class="emojirow">
           <div class="emoji"><input type="radio" id="mood1" name="Perasaan belajar" value="Sangat senang" required><label for="mood1"><span class="face">🤩</span>Sangat senang</label></div>
           <div class="emoji"><input type="radio" id="mood2" name="Perasaan belajar" value="Senang"><label for="mood2"><span class="face">😊</span>Senang</label></div>
@@ -124,59 +165,52 @@ footer{text-align:center;color:var(--muted);font-size:.8rem;padding:20px 10px}
         </div>
       </div>
       <div class="q">
-        <div class="question-title">Apa yang paling membuatmu tertarik selama pembelajaran?</div>
+        <div class="question-title">Apa yang paling membuatmu tertarik selama pembelajaran? (pilih satu) <span class="required">*</span></div>
         <div class="options three">
-          <label class="opt"><input type="radio" name="Hal paling menarik" value="Diskusi dan kerja kelompok"><span>Diskusi dan kerja kelompok</span></label>
+          <label class="opt"><input type="radio" name="Hal paling menarik" value="Diskusi dan kerja kelompok" required><span>Diskusi dan kerja kelompok</span></label>
           <label class="opt"><input type="radio" name="Hal paling menarik" value="Gambar, video, atau media"><span>Gambar, video, atau media</span></label>
           <label class="opt"><input type="radio" name="Hal paling menarik" value="Contoh dalam kehidupan sehari-hari"><span>Contoh kehidupan sehari-hari</span></label>
+          <label class="opt"><input type="radio" name="Hal paling menarik" value="Praktikum atau percobaan"><span>Praktikum atau percobaan</span></label>
+          <label class="opt"><input type="radio" name="Hal paling menarik" value="Kuis atau permainan"><span>Kuis atau permainan</span></label>
+          <label class="opt"><input type="radio" name="Hal paling menarik" value="Lainnya"><span>Lainnya</span></label>
         </div>
       </div>
     </section>
 
     <section class="card">
       <div class="sectionhead"><div class="num">03</div><div><h2>Refleksi Pemahaman Materi</h2><p>Nilai pemahamanmu sendiri dengan jujur. Pilih satu tingkat untuk setiap topik.</p></div></div>
-      <div class="topic"><div class="topicname">🍽️ Isi Piringku dan nilai gizi<span>Memilih makanan beragam dan seimbang.</span></div><select name="Pemahaman - Isi Piringku" required><option value="">Pilih tingkat pemahaman</option><option>Sangat paham — dapat menjelaskan dan memberi contoh</option><option>Paham — dapat menjelaskan secara umum</option><option>Mulai paham — masih perlu latihan</option><option>Belum paham — perlu penjelasan lagi</option></select></div>
-      <div class="topic"><div class="topicname">🥗 Sistem pencernaan<span>Organ pencernaan dan proses pengolahan makanan.</span></div><select name="Pemahaman - Sistem pencernaan" required><option value="">Pilih tingkat pemahaman</option><option>Sangat paham — dapat menjelaskan dan memberi contoh</option><option>Paham — dapat menjelaskan secara umum</option><option>Mulai paham — masih perlu latihan</option><option>Belum paham — perlu penjelasan lagi</option></select></div>
-      <div class="topic"><div class="topicname">❤️ Sistem peredaran darah<span>Jantung, pembuluh darah, dan fungsi darah.</span></div><select name="Pemahaman - Sistem peredaran darah" required><option value="">Pilih tingkat pemahaman</option><option>Sangat paham — dapat menjelaskan dan memberi contoh</option><option>Paham — dapat menjelaskan secara umum</option><option>Mulai paham — masih perlu latihan</option><option>Belum paham — perlu penjelasan lagi</option></select></div>
-      <div class="topic"><div class="topicname">🫁 Sistem pernapasan<span>Jalur udara, pertukaran gas, dan menjaga kesehatan paru-paru.</span></div><select name="Pemahaman - Sistem pernapasan" required><option value="">Pilih tingkat pemahaman</option><option>Sangat paham — dapat menjelaskan dan memberi contoh</option><option>Paham — dapat menjelaskan secara umum</option><option>Mulai paham — masih perlu latihan</option><option>Belum paham — perlu penjelasan lagi</option></select></div>
-      <div class="topic"><div class="topicname">💧 Sistem ekskresi<span>Organ yang membuang zat sisa dan fungsinya.</span></div><select name="Pemahaman - Sistem ekskresi" required><option value="">Pilih tingkat pemahaman</option><option>Sangat paham — dapat menjelaskan dan memberi contoh</option><option>Paham — dapat menjelaskan secara umum</option><option>Mulai paham — masih perlu latihan</option><option>Belum paham — perlu penjelasan lagi</option></select></div>
+      <div class="legend"><strong>Sangat paham</strong> = bisa menjelaskan dan memberi contoh • <strong>Paham</strong> = bisa menjelaskan secara umum • <strong>Mulai paham</strong> = masih perlu latihan • <strong>Belum paham</strong> = perlu penjelasan lagi</div>
+      <div id="topicList"></div>
     </section>
 
     <section class="card">
       <div class="sectionhead"><div class="num">04</div><div><h2>Mengenali Diri sebagai Pembelajar</h2><p>Pikirkan hal yang sudah kamu kuasai dan yang masih perlu diperbaiki.</p></div></div>
-      <div class="q"><label class="question-title" for="bangga">1. Hal apa yang paling kamu pahami atau paling kamu banggakan dari pembelajaran IPA ini?</label><textarea id="bangga" name="Hal yang paling dipahami" placeholder="Saya paling memahami... karena..."></textarea></div>
-      <div class="q"><label class="question-title" for="sulit">2. Materi atau istilah apa yang masih membingungkanmu? Mengapa?</label><textarea id="sulit" name="Materi yang masih membingungkan" placeholder="Saya masih perlu belajar tentang... karena..."></textarea></div>
-      <div class="q"><label class="question-title" for="strategi">3. Apa yang kamu lakukan ketika mengalami kesulitan memahami materi?</label><textarea id="strategi" name="Cara mengatasi kesulitan" placeholder="Contoh: bertanya kepada guru, membaca kembali, berdiskusi..."></textarea></div>
-      <div class="q"><label class="question-title" for="manfaat">4. Hubungan apa yang kamu temukan antara materi IPA ini dan kehidupan sehari-hari?</label><textarea id="manfaat" name="Hubungan dengan kehidupan sehari-hari" placeholder="Contohnya, saya menyadari bahwa..."></textarea></div>
+      <div class="q"><label class="question-title" for="bangga">1. Hal apa yang paling kamu pahami dari pembelajaran IPA ini? <span class="required">*</span></label><textarea id="bangga" name="Hal yang paling dipahami" maxlength="500" placeholder="Saya paling memahami... karena..." required></textarea></div>
+      <div class="q"><label class="question-title" for="sulit">2. Materi atau istilah apa yang masih membingungkanmu? Mengapa? <span class="required">*</span></label><textarea id="sulit" name="Materi yang masih membingungkan" maxlength="500" placeholder="Saya masih perlu belajar tentang... karena... (jika tidak ada, tulis: tidak ada)" required></textarea></div>
+      <div class="q"><label class="question-title" for="strategi">3. Apa yang kamu lakukan ketika mengalami kesulitan memahami materi?</label><textarea id="strategi" name="Cara mengatasi kesulitan" maxlength="500" placeholder="Contoh: bertanya kepada guru, membaca kembali, berdiskusi..."></textarea></div>
+      <div class="q"><label class="question-title" for="manfaat">4. Hubungan apa yang kamu temukan antara materi IPA ini dan kehidupan sehari-hari?</label><textarea id="manfaat" name="Hubungan dengan kehidupan sehari-hari" maxlength="500" placeholder="Contohnya, saya menyadari bahwa..."></textarea></div>
     </section>
 
     <section class="card">
       <div class="sectionhead"><div class="num">05</div><div><h2>Dari Pengetahuan Menjadi Kebiasaan Sehat</h2><p>Centang kebiasaan yang ingin atau sudah kamu lakukan. Pilih sesuai keadaanmu.</p></div></div>
-      <div class="checkgrid">
-        <label class="checkitem"><input type="checkbox" name="Kebiasaan sehat" value="Mengonsumsi makanan beragam dan seimbang"><span>🍽️ Mengonsumsi makanan beragam dan seimbang.</span></label>
-        <label class="checkitem"><input type="checkbox" name="Kebiasaan sehat" value="Minum air putih yang cukup"><span>💧 Minum air putih yang cukup.</span></label>
-        <label class="checkitem"><input type="checkbox" name="Kebiasaan sehat" value="Menjaga kebersihan makanan dan tangan"><span>🧼 Menjaga kebersihan makanan dan tangan.</span></label>
-        <label class="checkitem"><input type="checkbox" name="Kebiasaan sehat" value="Bergerak aktif dan berolahraga"><span>🏃 Bergerak aktif dan berolahraga.</span></label>
-        <label class="checkitem"><input type="checkbox" name="Kebiasaan sehat" value="Menghindari rokok dan asap rokok"><span>🚭 Menghindari rokok dan asap rokok.</span></label>
-        <label class="checkitem"><input type="checkbox" name="Kebiasaan sehat" value="Tidak menahan buang air kecil dan menjaga kebersihan diri"><span>🌿 Menjaga kebersihan diri dan tidak menahan buang air kecil.</span></label>
-      </div>
-      <div class="q" style="margin-top:16px"><label class="question-title" for="komitmen">Tuliskan satu tindakan nyata yang akan kamu mulai atau tingkatkan minggu ini.</label><textarea id="komitmen" name="Komitmen kebiasaan sehat" placeholder="Mulai minggu ini, saya akan..." required></textarea></div>
+      <div class="checkgrid" id="habitList"></div>
+      <div class="q" style="margin-top:16px"><label class="question-title" for="komitmen">Tuliskan satu tindakan nyata yang akan kamu mulai atau tingkatkan minggu ini. <span class="required">*</span></label><textarea id="komitmen" name="Komitmen kebiasaan sehat" maxlength="500" placeholder="Contoh: Mulai minggu ini, saya akan minum air putih 8 gelas setiap hari." required></textarea></div>
     </section>
 
     <section class="card">
       <div class="sectionhead"><div class="num">06</div><div><h2>Langkah Berikutnya</h2><p>Refleksi yang baik membantumu menentukan langkah selanjutnya.</p></div></div>
-      <div class="q"><div class="question-title">Dukungan apa yang paling kamu butuhkan agar lebih memahami materi IPA?</div>
+      <div class="q"><div class="question-title">Dukungan apa yang paling kamu butuhkan agar lebih memahami materi IPA? <span class="required">*</span></div>
         <div class="options">
-          <label class="opt"><input type="radio" name="Dukungan yang dibutuhkan" value="Penjelasan ulang dari guru"><span>Penjelasan ulang</span></label>
+          <label class="opt"><input type="radio" name="Dukungan yang dibutuhkan" value="Penjelasan ulang dari guru" required><span>Penjelasan ulang</span></label>
           <label class="opt"><input type="radio" name="Dukungan yang dibutuhkan" value="Gambar atau video"><span>Gambar atau video</span></label>
           <label class="opt"><input type="radio" name="Dukungan yang dibutuhkan" value="Latihan soal"><span>Latihan soal</span></label>
           <label class="opt"><input type="radio" name="Dukungan yang dibutuhkan" value="Diskusi bersama teman"><span>Diskusi bersama teman</span></label>
         </div>
       </div>
-      <div class="q"><label class="question-title" for="pesan">Pesan, saran, atau pertanyaan untuk pembelajaran IPA berikutnya (opsional).</label><textarea id="pesan" name="Pesan untuk guru" placeholder="Saya berharap pembelajaran berikutnya..."></textarea></div>
-      <div class="q"><div class="question-title">Seberapa yakin kamu dapat menjelaskan satu hal yang dipelajari kepada orang lain?</div>
+      <div class="q"><label class="question-title" for="pesan">Pesan, saran, atau pertanyaan untuk pembelajaran IPA berikutnya (opsional).</label><textarea id="pesan" name="Pesan untuk guru" maxlength="500" placeholder="Saya berharap pembelajaran berikutnya..."></textarea></div>
+      <div class="q"><div class="question-title">Seberapa yakin kamu dapat menjelaskan satu hal yang dipelajari kepada orang lain? <span class="required">*</span></div>
         <div class="options">
-          <label class="opt"><input type="radio" name="Keyakinan menjelaskan" value="Sangat yakin"><span>Sangat yakin</span></label>
+          <label class="opt"><input type="radio" name="Keyakinan menjelaskan" value="Sangat yakin" required><span>Sangat yakin</span></label>
           <label class="opt"><input type="radio" name="Keyakinan menjelaskan" value="Yakin"><span>Yakin</span></label>
           <label class="opt"><input type="radio" name="Keyakinan menjelaskan" value="Kurang yakin"><span>Kurang yakin</span></label>
           <label class="opt"><input type="radio" name="Keyakinan menjelaskan" value="Belum yakin"><span>Belum yakin</span></label>
@@ -187,65 +221,79 @@ footer{text-align:center;color:var(--muted);font-size:.8rem;padding:20px 10px}
     <div class="card">
       <strong>🌱 Ingat, setiap orang berkembang dengan kecepatan yang berbeda.</strong>
       <div class="actions">
-        <button class="primary" type="submit">✓ Selesaikan Refleksi</button>
+        <button class="primary" type="submit" id="submitBtn">✓ Selesaikan Refleksi</button>
         <button class="secondary" type="button" id="downloadBtn">↓ Unduh Jawaban (.txt)</button>
         <button class="soft" type="button" id="printBtn">▣ Cetak / Simpan PDF</button>
+        <button class="secondary" type="button" id="newBtn" style="display:none">+ Isi Refleksi Baru</button>
         <button class="dark" type="button" id="openTeacherBtn">🔑 Dashboard Guru</button>
       </div>
       <div class="status" id="status" role="status"></div>
     </div>
   </form>
 
-  <!-- DASHBOARD GURU & ANALISIS TINDAK LANJUT -->
+  <!-- LOGIN GURU -->
+  <section class="card" id="loginPanel">
+    <div class="sectionhead"><div class="num">🔑</div><div><h2>Masuk sebagai Guru</h2><p>Gunakan akun guru yang terdaftar. Siswa tidak dapat membuka dashboard ini.</p></div></div>
+    <form id="loginForm" autocomplete="on">
+      <div class="grid2">
+        <div><label class="fieldlabel" for="loginEmail">Email</label><input id="loginEmail" type="email" autocomplete="username" required></div>
+        <div><label class="fieldlabel" for="loginPass">Kata sandi</label><input id="loginPass" type="password" autocomplete="current-password" required></div>
+      </div>
+      <div class="actions">
+        <button class="primary" type="submit" id="loginBtn">Masuk</button>
+        <button class="secondary" type="button" id="loginCancel">Batal</button>
+      </div>
+      <div class="loginmsg" id="loginMsg" role="alert"></div>
+    </form>
+  </section>
+
+  <!-- DASHBOARD GURU -->
   <section class="card" id="teacherPanel">
     <div class="teacher-header">
       <div>
-        <h2 style="margin:0;color:var(--teal)">📊 Dashboard Evaluation & Tindak Lanjut Guru</h2>
-        <p style="margin:4px 0 0;color:var(--muted);font-size:.88rem">Analisis otomatis dari respon refleksi siswa SMP Negeri 2 Belang</p>
+        <h2 style="margin:0;color:var(--teal)">📊 Dashboard Evaluasi & Tindak Lanjut Guru</h2>
+        <p style="margin:4px 0 0;color:var(--muted);font-size:.88rem">Analisis otomatis dari respon refleksi siswa SMP Negeri 2 Belang <span id="teacherWho"></span></p>
       </div>
-      <div>
-        <button class="soft" type="button" onclick="window.print()">🖨️ Cetak Laporan Guru</button>
-        <button class="secondary" type="button" id="closeTeacherBtn">✕ Tutup</button>
+      <div class="btns noprint">
+        <button class="soft" type="button" id="refreshBtn">↻ Muat Ulang</button>
+        <button class="soft" type="button" id="csvBtn">⬇ Ekspor CSV</button>
+        <button class="soft" type="button" id="printTeacherBtn">🖨️ Cetak Laporan</button>
+        <button class="secondary" type="button" id="closeTeacherBtn">Keluar</button>
       </div>
     </div>
 
-    <!-- BOX REKOMENDASI TINDAK LANJUT GURU (OTOMATIS) -->
+    <div class="filterbar noprint">
+      <label for="kelasFilter">Tampilkan kelas:</label>
+      <select id="kelasFilter">
+        <option value="">Semua kelas</option>
+        <option>VIII A</option><option>VIII B</option><option>VIII C</option><option>Lainnya</option>
+      </select>
+      <span class="muted" id="countInfo"></span>
+    </div>
+
     <div class="action-box">
       <h3>🎯 Rekomendasi Tindak Lanjut Guru (Kesimpulan Otomatis)</h3>
       <div id="actionRecommendation">Memproses analisis data refleksi...</div>
     </div>
 
-    <!-- GRAFIK-GRAFIK HASIL REFLEKSI -->
     <div class="chart-grid">
-      <div class="chart-box">
-        <h3>1. Distribusi Perasaan Belajar Siswa</h3>
-        <canvas id="moodChart"></canvas>
-      </div>
-      <div class="chart-box">
-        <h3>2. Tingkat Pemahaman Per Sub-Materi</h3>
-        <canvas id="pemahamanChart"></canvas>
-      </div>
-      <div class="chart-box" style="grid-column: 1 / -1;">
-        <h3>3. Dukungan Belajar yang Paling Dibutuhkan Siswa</h3>
-        <canvas id="supportChart"></canvas>
-      </div>
+      <div class="chart-box"><h3>1. Distribusi Perasaan Belajar</h3><canvas id="moodChart"></canvas></div>
+      <div class="chart-box"><h3>2. Dukungan Belajar yang Dibutuhkan</h3><canvas id="supportChart"></canvas></div>
+      <div class="chart-box full"><h3>3. Tingkat Pemahaman per Topik (jumlah siswa)</h3><canvas id="pemahamanChart"></canvas></div>
+      <div class="chart-box"><h3>4. Keyakinan Menjelaskan kepada Orang Lain</h3><canvas id="confChart"></canvas></div>
+      <div class="chart-box"><h3>5. Kebiasaan Sehat yang Dipilih</h3><canvas id="habitChart"></canvas></div>
     </div>
 
-    <!-- TABEL LENGKAP DETAIL JAWABAN SISWA -->
-    <h3 style="color:var(--teal);margin-bottom:8px">📋 Rekapitulasi Jawaban Seluruh Siswa</h3>
+    <h3 style="color:var(--teal);margin-bottom:8px">📋 Rekapitulasi Jawaban Siswa</h3>
     <div class="table-wrapper">
       <div id="loadingData">Memuat data respon...</div>
       <table class="student-table" id="studentTable" style="display:none;">
         <thead>
           <tr>
-            <th>No</th>
-            <th>Nama Siswa</th>
-            <th>Kelas</th>
-            <th>Perasaan</th>
-            <th>Materi Paling Dipahami</th>
-            <th>Materi Membingungkan</th>
-            <th>Komitmen Kebiasaan Sehat</th>
-            <th>Dukungan Dibutuhkan</th>
+            <th>No</th><th>Nama Siswa</th><th>Kelas</th><th>Perasaan</th>
+            <th>Isi Piringku</th><th>Pencernaan</th><th>Peredaran Darah</th><th>Pernapasan</th><th>Ekskresi</th>
+            <th>Paling Dipahami</th><th>Membingungkan</th><th>Komitmen Kebiasaan Sehat</th>
+            <th>Dukungan</th><th>Keyakinan</th><th>Pesan untuk Guru</th>
           </tr>
         </thead>
         <tbody id="studentTableBody"></tbody>
@@ -253,14 +301,11 @@ footer{text-align:center;color:var(--muted);font-size:.8rem;padding:20px 10px}
     </div>
   </section>
 
-  <footer>LKPD Refleksi Diri • IPA Kelas VIII • SMP Negeri 2 Belang</footer>
+  <footer>LKM 8 Refleksi Diri • IPA Kelas VIII • SMP Negeri 2 Belang</footer>
 </div>
 
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-app.js";
-import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-auth.js";
-import { getFirestore, collection, addDoc, getDocs, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-firestore.js";
-
+<script>
+/* ============ DATA TETAP ============ */
 const firebaseConfig = {
   apiKey: "AIzaSyABvu49YErl5kdCkvB7u_NIHluvGzZYw14",
   authDomain: "lkm8refleksi.firebaseapp.com",
@@ -269,254 +314,481 @@ const firebaseConfig = {
   messagingSenderId: "220297236574",
   appId: "1:220297236574:web:5fe34e5aa5fe048f8964cf"
 };
+const COLLECTION = "lkm8_refleksi";
 
-const TEACHER_PIN = "123456"; // PIN KATA SANDI AKSES GURU
+const TOPICS = [
+  {key:'isiPiringku',    name:'Pemahaman - Isi Piringku',          label:'Isi Piringku',    icon:'🍽️', title:'Isi Piringku dan nilai gizi', desc:'Memilih makanan beragam dan seimbang.'},
+  {key:'pencernaan',     name:'Pemahaman - Sistem pencernaan',     label:'Pencernaan',      icon:'🥗', title:'Sistem pencernaan', desc:'Organ pencernaan dan proses pengolahan makanan.'},
+  {key:'peredaranDarah', name:'Pemahaman - Sistem peredaran darah',label:'Peredaran Darah', icon:'❤️', title:'Sistem peredaran darah', desc:'Jantung, pembuluh darah, dan fungsi darah.'},
+  {key:'pernapasan',     name:'Pemahaman - Sistem pernapasan',     label:'Pernapasan',      icon:'🫁', title:'Sistem pernapasan', desc:'Jalur udara, pertukaran gas, dan menjaga kesehatan paru-paru.'},
+  {key:'ekskresi',       name:'Pemahaman - Sistem ekskresi',       label:'Ekskresi',        icon:'💧', title:'Sistem ekskresi', desc:'Organ yang membuang zat sisa dan fungsinya.'}
+];
+const LEVELS = ['Sangat paham','Paham','Mulai paham','Belum paham'];
+const LVCLASS = {'Sangat paham':'lv-sp','Paham':'lv-p','Mulai paham':'lv-mp','Belum paham':'lv-bp'};
+const HABITS = [
+  {icon:'🍽️', value:'Mengonsumsi makanan beragam dan seimbang', text:'Mengonsumsi makanan beragam dan seimbang.', short:'Makanan seimbang'},
+  {icon:'💧', value:'Minum air putih yang cukup', text:'Minum air putih yang cukup.', short:'Minum air putih'},
+  {icon:'🧼', value:'Menjaga kebersihan makanan dan tangan', text:'Menjaga kebersihan makanan dan tangan.', short:'Kebersihan makanan/tangan'},
+  {icon:'🏃', value:'Bergerak aktif dan berolahraga', text:'Bergerak aktif dan berolahraga.', short:'Olahraga'},
+  {icon:'🚭', value:'Menghindari rokok dan asap rokok', text:'Menghindari rokok dan asap rokok.', short:'Hindari rokok'},
+  {icon:'🌿', value:'Tidak menahan buang air kecil dan menjaga kebersihan diri', text:'Menjaga kebersihan diri dan tidak menahan buang air kecil.', short:'Kebersihan diri/BAK'}
+];
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const lvl = v => String(v || '').split(' — ')[0].trim();
 
-let db = null;
-let firebaseReady = false;
-
-try {
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-  db = getFirestore(app);
-  await signInAnonymously(auth);
-  firebaseReady = true;
-} catch (error) {
-  console.error("Firebase initialization error:", error);
+function todayLocal(){
+  const d = new Date(), p = n => String(n).padStart(2,'0');
+  return d.getFullYear() + '-' + p(d.getMonth()+1) + '-' + p(d.getDate());
 }
 
-const form=document.getElementById('reflectionForm');
-const progressBar=document.getElementById('progressBar');
-const progressText=document.getElementById('progressText');
-const statusBox=document.getElementById('status');
-const requiredNames=['Nama lengkap','Kelas','Perasaan belajar','Pemahaman - Isi Piringku','Pemahaman - Sistem pencernaan','Pemahaman - Sistem peredaran darah','Pemahaman - Sistem pernapasan','Pemahaman - Sistem ekskresi','Komitmen kebiasaan sehat'];
+/* ============ BANGUN FORM ============ */
+$('topicList').innerHTML = TOPICS.map(t => `
+  <div class="topic">
+    <div class="topicname">${t.icon} ${esc(t.title)}<span>${esc(t.desc)}</span></div>
+    <div class="options">
+      ${LEVELS.map((l,i) => `<label class="opt"><input type="radio" name="${esc(t.name)}" value="${l}"${i===0?' required':''}><span>${l}</span></label>`).join('')}
+    </div>
+  </div>`).join('');
+
+$('habitList').innerHTML = HABITS.map(h =>
+  `<label class="checkitem"><input type="checkbox" name="Kebiasaan sehat" value="${esc(h.value)}"><span>${h.icon} ${esc(h.text)}</span></label>`
+).join('');
+
+$('tanggal').value = todayLocal();
+
+/* ============ PROGRES ============ */
+const form = $('reflectionForm');
+const requiredNames = ['Nama lengkap','Kelas','Perasaan belajar','Hal paling menarik',
+  ...TOPICS.map(t => t.name),
+  'Hal yang paling dipahami','Materi yang masih membingungkan','Komitmen kebiasaan sehat',
+  'Dukungan yang dibutuhkan','Keyakinan menjelaskan'];
 
 function updateProgress(){
-  const done=requiredNames.filter(n=>{
-    const els=[...form.elements].filter(e=>e.name===n);
-    if(!els.length)return false;
-    if(els[0].type==='radio')return els.some(e=>e.checked);
-    return els.some(e=>String(e.value||'').trim()!=='');
+  const done = requiredNames.filter(n => {
+    const els = [...form.elements].filter(e => e.name === n);
+    if(!els.length) return false;
+    if(els[0].type === 'radio') return els.some(e => e.checked);
+    return els.some(e => String(e.value || '').trim() !== '');
   }).length;
-  const pct=Math.round(done/requiredNames.length*100);
-  progressBar.style.width=pct+'%';progressText.textContent=pct+'% terisi';
+  const pct = Math.round(done / requiredNames.length * 100);
+  $('progressBar').style.width = pct + '%';
+  $('progressText').textContent = pct + '% terisi';
+}
+form.addEventListener('input', updateProgress);
+form.addEventListener('change', updateProgress);
+updateProgress();
+
+/* ============ FIREBASE (dimuat tanpa memblokir halaman) ============ */
+const FB = {};
+let fbReady = false;
+
+async function initFirebase(){
+  try{
+    const B = 'https://www.gstatic.com/firebasejs/12.5.0/';
+    const [appM, authM, fsM] = await Promise.all([
+      import(B + 'firebase-app.js'),
+      import(B + 'firebase-auth.js'),
+      import(B + 'firebase-firestore.js')
+    ]);
+    const app = appM.initializeApp(firebaseConfig);
+    FB.authM = authM; FB.fsM = fsM;
+    FB.auth = authM.getAuth(app);
+    FB.db = fsM.getFirestore(app);
+    await authM.setPersistence(FB.auth, authM.browserSessionPersistence);
+    await authM.signInAnonymously(FB.auth);
+    fbReady = true;
+  }catch(err){
+    console.error('Firebase init error:', err);
+    fbReady = false;
+  }
+}
+let fbInit = initFirebase();
+
+async function ensureAuth(){
+  await fbInit;
+  if(!fbReady){ fbInit = initFirebase(); await fbInit; }
+  if(!fbReady) throw new Error('fb-not-ready');
+  if(!FB.auth.currentUser) await FB.authM.signInAnonymously(FB.auth);
 }
 
-form.addEventListener('input',updateProgress);
-form.addEventListener('change',updateProgress);
-
+/* ============ KUMPULKAN JAWABAN ============ */
 function collect(){
-  const data={};
-  const fd=new FormData(form);
-  for(const [key,value] of fd.entries()){
-    if(data[key]!==undefined){if(!Array.isArray(data[key]))data[key]=[data[key]];data[key].push(value);}
-    else data[key]=value;
-  }
-  return data;
+  const fd = new FormData(form);
+  const g = n => String(fd.get(n) || '').trim();
+  const pemahaman = {};
+  TOPICS.forEach(t => { pemahaman[t.key] = g(t.name); });
+  return {
+    nama: g('Nama lengkap'),
+    kelas: g('Kelas'),
+    tanggalRefleksi: g('Tanggal refleksi'),
+    kelompok: g('Kelompok'),
+    perasaanBelajar: g('Perasaan belajar'),
+    halPalingMenarik: g('Hal paling menarik'),
+    pemahaman,
+    halPalingDipahami: g('Hal yang paling dipahami'),
+    materiMembingungkan: g('Materi yang masih membingungkan'),
+    strategiKesulitan: g('Cara mengatasi kesulitan'),
+    hubunganSehari: g('Hubungan dengan kehidupan sehari-hari'),
+    kebiasaanSehat: fd.getAll('Kebiasaan sehat').map(String),
+    komitmenSehat: g('Komitmen kebiasaan sehat'),
+    dukunganDibutuhkan: g('Dukungan yang dibutuhkan'),
+    pesanUntukGuru: g('Pesan untuk guru'),
+    keyakinan: g('Keyakinan menjelaskan')
+  };
 }
 
-form.addEventListener('submit', async e=>{
+/* ============ KIRIM ============ */
+const statusBox = $('status');
+const submitBtn = $('submitBtn');
+let submitting = false;
+
+function showStatus(msg, warn){
+  statusBox.textContent = msg;
+  statusBox.className = 'status' + (warn ? ' warn' : '');
+  statusBox.style.display = 'block';
+}
+
+form.addEventListener('submit', async e => {
   e.preventDefault();
-  if(!form.reportValidity())return;
-  statusBox.style.display='block';
-  const submitButton = form.querySelector('button[type="submit"]');
-  submitButton.disabled = true;
-  submitButton.textContent = 'Mengirim...';
-  try {
-    if (!firebaseReady || !db) throw new Error("Firebase belum siap.");
-    const d = collect();
-    const record = {
-      nama: String(d["Nama lengkap"] || "").trim(),
-      kelas: String(d["Kelas"] || ""),
-      tanggalRefleksi: String(d["Tanggal refleksi"] || ""),
-      kelompok: String(d["Kelompok"] || "").trim(),
-      perasaanBelajar: String(d["Perasaan belajar"] || ""),
-      halPalingMenarik: String(d["Hal paling menarik"] || ""),
-      pemahaman: {
-        isiPiringku: String(d["Pemahaman - Isi Piringku"] || ""),
-        pencernaan: String(d["Pemahaman - Sistem pencernaan"] || ""),
-        peredaranDarah: String(d["Pemahaman - Sistem peredaran darah"] || ""),
-        pernapasan: String(d["Pemahaman - Sistem pernapasan"] || ""),
-        ekskresi: String(d["Pemahaman - Sistem ekskresi"] || "")
-      },
-      halPalingDipahami: String(d["Hal yang paling dipahami"] || "").trim(),
-      materiMembingungkan: String(d["Materi yang masih membingungkan"] || "").trim(),
-      komitmenSehat: String(d["Komitmen kebiasaan sehat"] || "").trim(),
-      dukunganDibutuhkan: String(d["Dukungan yang dibutuhkan"] || ""),
-      createdAt: serverTimestamp()
-    };
-    await addDoc(collection(db, "lkm8_refleksi"), record);
-    statusBox.textContent = "Berhasil! Refleksimu sudah tersimpan di database.";
-    statusBox.style.background = "#e9f8f0";
-    statusBox.style.color = "#17613b";
-  } catch (error) {
-    statusBox.textContent = "Jawaban gagal dikirim: " + error.message;
-    statusBox.style.background = "#fff4e5";
-    statusBox.style.color = "#7c4a03";
-  } finally {
-    submitButton.disabled = false;
-    submitButton.textContent = '✓ Selesaikan Refleksi';
+  if(submitting) return;
+  if(!form.reportValidity()) return;
+  if(navigator.onLine === false){
+    showStatus('Perangkatmu sedang tidak terhubung ke internet. Periksa koneksi, lalu coba lagi.', true);
+    return;
+  }
+  submitting = true;
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'Mengirim...';
+  let ok = false;
+  try{
+    await ensureAuth();
+    const record = collect();
+    record.createdAt = FB.fsM.serverTimestamp();
+    await FB.fsM.addDoc(FB.fsM.collection(FB.db, COLLECTION), record);
+    ok = true;
+    showStatus('Berhasil! Refleksimu sudah terkirim. Terima kasih sudah menjawab dengan jujur 🌱');
+    submitBtn.textContent = '✓ Terkirim';
+    $('newBtn').style.display = 'inline-block';
+  }catch(err){
+    console.error(err);
+    const code = err && err.code ? err.code : '';
+    if(code === 'permission-denied')
+      showStatus('Jawaban ditolak oleh server. Pastikan semua isian terisi dengan benar, lalu coba lagi. Jika tetap gagal, hubungi gurumu.', true);
+    else if(err && err.message === 'fb-not-ready')
+      showStatus('Belum bisa terhubung ke server. Periksa internet lalu tekan tombol kirim lagi.', true);
+    else
+      showStatus('Jawaban gagal dikirim. Periksa internet lalu coba lagi. (' + (code || 'error') + ')', true);
+  }finally{
+    submitting = false;
+    if(!ok){ submitBtn.disabled = false; submitBtn.textContent = '✓ Selesaikan Refleksi'; }
   }
 });
 
-// AKSES PANEL GURU
-const openTeacherBtn = document.getElementById('openTeacherBtn');
-const closeTeacherBtn = document.getElementById('closeTeacherBtn');
-const teacherPanel = document.getElementById('teacherPanel');
+$('newBtn').addEventListener('click', () => {
+  form.reset();
+  $('tanggal').value = todayLocal();
+  updateProgress();
+  statusBox.style.display = 'none';
+  $('newBtn').style.display = 'none';
+  submitBtn.disabled = false;
+  submitBtn.textContent = '✓ Selesaikan Refleksi';
+  window.scrollTo({top:0, behavior:'smooth'});
+});
 
-let chartInstances = {};
+/* ============ UNDUH .TXT & CETAK ============ */
+function download(filename, text, mime){
+  const blob = new Blob([text], {type: mime});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = filename;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
 
-openTeacherBtn.addEventListener('click', async () => {
-  const pinInput = prompt("Masukkan PIN Khusus Guru untuk membuka Dashboard Evaluation:");
-  if (pinInput === TEACHER_PIN) {
-    teacherPanel.style.display = 'block';
-    teacherPanel.scrollIntoView({ behavior: 'smooth' });
-    await loadTeacherDashboard();
-  } else if (pinInput !== null) {
-    alert("PIN Salah! Akses ditolak.");
+$('downloadBtn').addEventListener('click', () => {
+  const fd = new FormData(form);
+  const names = [...new Set([...form.elements].filter(e => e.name).map(e => e.name))];
+  const lines = ['LKM 8 | Refleksi Diri IPA', 'SMP Negeri 2 Belang • IPA Kelas VIII', ''];
+  names.forEach(n => {
+    const vals = fd.getAll(n).map(v => String(v).trim()).filter(Boolean);
+    lines.push(n + ': ' + (vals.length ? vals.join('; ') : '-'));
+    lines.push('');
+  });
+  const nm = (String(fd.get('Nama lengkap') || '').trim() || 'Siswa').replace(/[^\p{L}\p{N}]+/gu, '_').slice(0, 40);
+  download('Refleksi_IPA_' + nm + '.txt', lines.join('\r\n'), 'text/plain;charset=utf-8');
+});
+
+$('printBtn').addEventListener('click', () => window.print());
+
+/* ============ LOGIN GURU ============ */
+const loginPanel = $('loginPanel');
+const teacherPanel = $('teacherPanel');
+const loginMsg = $('loginMsg');
+let allRecords = [];
+const charts = {};
+
+function isTeacher(){ return !!(FB.auth && FB.auth.currentUser && !FB.auth.currentUser.isAnonymous); }
+
+$('openTeacherBtn').addEventListener('click', async () => {
+  try{ await ensureAuth(); }catch(e){}
+  if(isTeacher()){ openDashboard(); return; }
+  loginMsg.style.display = 'none';
+  loginPanel.style.display = 'block';
+  loginPanel.scrollIntoView({behavior:'smooth'});
+  $('loginEmail').focus();
+});
+
+$('loginCancel').addEventListener('click', () => { loginPanel.style.display = 'none'; $('loginPass').value = ''; });
+
+$('loginForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  const btn = $('loginBtn');
+  btn.disabled = true; btn.textContent = 'Memeriksa...';
+  loginMsg.style.display = 'none';
+  try{
+    await ensureAuth();
+    await FB.authM.signInWithEmailAndPassword(FB.auth, $('loginEmail').value.trim(), $('loginPass').value);
+    $('loginPass').value = '';
+    loginPanel.style.display = 'none';
+    openDashboard();
+  }catch(err){
+    const c = err && err.code ? err.code : '';
+    let m = 'Gagal masuk. Periksa koneksi lalu coba lagi.';
+    if(['auth/invalid-credential','auth/wrong-password','auth/user-not-found','auth/invalid-email'].includes(c)) m = 'Email atau kata sandi salah.';
+    else if(c === 'auth/too-many-requests') m = 'Terlalu banyak percobaan. Tunggu beberapa menit lalu coba lagi.';
+    loginMsg.textContent = m;
+    loginMsg.style.display = 'block';
+  }finally{
+    btn.disabled = false; btn.textContent = 'Masuk';
   }
 });
 
-closeTeacherBtn.addEventListener('click', () => {
+async function closeDashboard(){
   teacherPanel.style.display = 'none';
+  allRecords = [];
+  $('studentTableBody').innerHTML = '';
+  Object.values(charts).forEach(c => c && c.destroy());
+  try{ await FB.authM.signOut(FB.auth); await ensureAuth(); }catch(e){ console.error(e); }
+}
+$('closeTeacherBtn').addEventListener('click', closeDashboard);
+
+function openDashboard(){
+  $('teacherWho').textContent = FB.auth.currentUser.email ? '• ' + FB.auth.currentUser.email : '';
+  teacherPanel.style.display = 'block';
+  teacherPanel.scrollIntoView({behavior:'smooth'});
+  loadDashboard();
+}
+
+$('refreshBtn').addEventListener('click', loadDashboard);
+$('kelasFilter').addEventListener('change', renderAll);
+$('printTeacherBtn').addEventListener('click', () => {
+  document.body.classList.add('print-teacher');
+  window.print();
 });
+window.addEventListener('afterprint', () => document.body.classList.remove('print-teacher'));
 
-async function loadTeacherDashboard() {
-  const loadingData = document.getElementById('loadingData');
-  const studentTable = document.getElementById('studentTable');
-  const studentTableBody = document.getElementById('studentTableBody');
-  const actionDiv = document.getElementById('actionRecommendation');
+/* ============ MUAT DATA ============ */
+async function loadDashboard(){
+  const loading = $('loadingData'), table = $('studentTable');
+  loading.style.display = 'block';
+  loading.textContent = 'Memuat data respon...';
+  table.style.display = 'none';
+  $('actionRecommendation').textContent = 'Memproses analisis data refleksi...';
+  try{
+    const {collection, query, orderBy, limit, getDocs} = FB.fsM;
+    const snap = await getDocs(query(collection(FB.db, COLLECTION), orderBy('createdAt','desc'), limit(1000)));
+    allRecords = [];
+    snap.forEach(d => allRecords.push(d.data()));
+    renderAll();
+  }catch(err){
+    console.error(err);
+    allRecords = [];
+    loading.textContent = (err && err.code === 'permission-denied')
+      ? 'Akun ini tidak memiliki izin membaca data. Pastikan UID guru sudah dimasukkan di aturan Firestore.'
+      : 'Gagal memuat data: ' + (err && err.message ? err.message : 'kesalahan tidak dikenal');
+    $('actionRecommendation').textContent = '-';
+  }
+}
 
-  loadingData.style.display = 'block';
-  studentTable.style.display = 'none';
-  studentTableBody.innerHTML = '';
+function filtered(){
+  const f = $('kelasFilter').value;
+  return allRecords.filter(r => !f || r.kelas === f);
+}
 
-  try {
-    const q = query(collection(db, "lkm8_refleksi"), orderBy("createdAt", "desc"));
-    const querySnapshot = await getDocs(q);
+function renderAll(){
+  const recs = filtered();
+  const loading = $('loadingData'), table = $('studentTable');
+  $('countInfo').textContent = recs.length + ' respon' + ($('kelasFilter').value ? ' (' + $('kelasFilter').value + ')' : '') + ' dari ' + allRecords.length + ' total';
+  Object.values(charts).forEach(c => c && c.destroy());
+  if(!recs.length){
+    loading.style.display = 'block';
+    loading.textContent = allRecords.length ? 'Tidak ada respon untuk kelas ini.' : 'Belum ada respon siswa yang masuk.';
+    table.style.display = 'none';
+    $('actionRecommendation').innerHTML = '<em>Belum ada data untuk dianalisis.</em>';
+    return;
+  }
+  loading.style.display = 'none';
+  table.style.display = 'table';
+  renderTable(recs);
+  renderAnalytics(recs);
+}
 
-    let records = [];
-    querySnapshot.forEach((doc) => records.push(doc.data()));
+/* ============ TABEL ============ */
+function renderTable(recs){
+  $('studentTableBody').innerHTML = recs.map((r,i) => {
+    const cells = TOPICS.map(t => {
+      const l = lvl(r.pemahaman && r.pemahaman[t.key]);
+      return `<td class="${LVCLASS[l] || ''}">${esc(l || '-')}</td>`;
+    }).join('');
+    const habits = Array.isArray(r.kebiasaanSehat) && r.kebiasaanSehat.length ? r.kebiasaanSehat.join('; ') : '';
+    const komit = [habits, r.komitmenSehat].filter(Boolean).join(' — ');
+    return `<tr>
+      <td>${i+1}</td>
+      <td><strong>${esc(r.nama || '-')}</strong></td>
+      <td>${esc(r.kelas || '-')}</td>
+      <td>${esc(r.perasaanBelajar || '-')}</td>
+      ${cells}
+      <td>${esc(r.halPalingDipahami || '-')}</td>
+      <td>${esc(r.materiMembingungkan || '-')}</td>
+      <td>${esc(komit || '-')}</td>
+      <td>${esc(r.dukunganDibutuhkan || '-')}</td>
+      <td>${esc(r.keyakinan || '-')}</td>
+      <td>${esc(r.pesanUntukGuru || '-')}</td>
+    </tr>`;
+  }).join('');
+}
 
-    if (records.length === 0) {
-      loadingData.textContent = "Belum ada respon siswa yang masuk.";
-      actionDiv.innerHTML = "<em>Belum ada data untuk dianalisis.</em>";
-      return;
-    }
+/* ============ ANALISIS & GRAFIK ============ */
+function topKeys(obj){
+  const m = Math.max(...Object.values(obj));
+  return m > 0 ? Object.keys(obj).filter(k => obj[k] === m) : [];
+}
 
-    // 1. Tampilkan Data di Tabel
-    let index = 1;
-    records.forEach((data) => {
-      const row = document.createElement('tr');
-      row.innerHTML = `
-        <td>${index++}</td>
-        <td><strong>${data.nama || '-'}</strong></td>
-        <td>${data.kelas || '-'}</td>
-        <td>${data.perasaanBelajar || '-'}</td>
-        <td>${data.halPalingDipahami || '-'}</td>
-        <td>${data.materiMembingungkan || '-'}</td>
-        <td>${data.komitmenSehat || '-'}</td>
-        <td>${data.dukunganDibutuhkan || '-'}</td>
-      `;
-      studentTableBody.appendChild(row);
+function renderAnalytics(recs){
+  const total = recs.length;
+  const mood = {'Sangat senang':0,'Senang':0,'Biasa saja':0,'Bingung':0,'Masih kesulitan':0};
+  const sup  = {'Penjelasan ulang dari guru':0,'Gambar atau video':0,'Latihan soal':0,'Diskusi bersama teman':0};
+  const conf = {'Sangat yakin':0,'Yakin':0,'Kurang yakin':0,'Belum yakin':0};
+  const habit = {}; HABITS.forEach(h => habit[h.short] = 0);
+  const ts = TOPICS.map(t => ({...t, c:{'Sangat paham':0,'Paham':0,'Mulai paham':0,'Belum paham':0}}));
+  const needHelp = [];
+
+  recs.forEach(r => {
+    if(r.perasaanBelajar in mood) mood[r.perasaanBelajar]++;
+    if(r.dukunganDibutuhkan in sup) sup[r.dukunganDibutuhkan]++;
+    if(r.keyakinan in conf) conf[r.keyakinan]++;
+    (Array.isArray(r.kebiasaanSehat) ? r.kebiasaanSehat : []).forEach(v => {
+      const h = HABITS.find(x => x.value === v); if(h) habit[h.short]++;
     });
-
-    loadingData.style.display = 'none';
-    studentTable.style.display = 'table';
-
-    // 2. Olah Data untuk Grafik & Kesimpulan Otomatis
-    renderAnalytics(records);
-
-  } catch (error) {
-    loadingData.textContent = "Gagal memuat data: " + error.message;
-  }
-}
-
-function renderAnalytics(records) {
-  const total = records.length;
-
-  // Hitung Perasaan
-  const moodCounts = { 'Sangat senang':0, 'Senang':0, 'Biasa saja':0, 'Bingung':0, 'Masih kesulitan':0 };
-  // Hitung Dukungan
-  const supportCounts = { 'Penjelasan ulang dari guru':0, 'Gambar atau video':0, 'Latihan soal':0, 'Diskusi bersama teman':0 };
-  // Hitung Pemahaman Kurang
-  let lowUnderstanding = { 'Isi Piringku':0, 'Pencernaan':0, 'Peredaran Darah':0, 'Pernapasan':0, 'Ekskresi':0 };
-
-  records.forEach(r => {
-    if (r.perasaanBelajar in moodCounts) moodCounts[r.perasaanBelajar]++;
-    if (r.dukunganDibutuhkan in supportCounts) supportCounts[r.dukunganDibutuhkan]++;
-    
-    if (r.pemahaman) {
-      if (r.pemahaman.isiPiringku?.includes('Belum') || r.pemahaman.isiPiringku?.includes('Mulai')) lowUnderstanding['Isi Piringku']++;
-      if (r.pemahaman.pencernaan?.includes('Belum') || r.pemahaman.pencernaan?.includes('Mulai')) lowUnderstanding['Pencernaan']++;
-      if (r.pemahaman.peredaranDarah?.includes('Belum') || r.pemahaman.peredaranDarah?.includes('Mulai')) lowUnderstanding['Peredaran Darah']++;
-      if (r.pemahaman.pernapasan?.includes('Belum') || r.pemahaman.pernapasan?.includes('Mulai')) lowUnderstanding['Pernapasan']++;
-      if (r.pemahaman.ekskresi?.includes('Belum') || r.pemahaman.ekskresi?.includes('Mulai')) lowUnderstanding['Ekskresi']++;
-    }
+    let belum = 0;
+    ts.forEach(t => {
+      const l = lvl(r.pemahaman && r.pemahaman[t.key]);
+      if(l in t.c) t.c[l]++;
+      if(l === 'Belum paham') belum++;
+    });
+    const why = [];
+    if(r.perasaanBelajar === 'Bingung' || r.perasaanBelajar === 'Masih kesulitan') why.push('merasa ' + r.perasaanBelajar.toLowerCase());
+    if(belum >= 2) why.push(belum + ' topik belum paham');
+    if(r.keyakinan === 'Belum yakin') why.push('belum yakin menjelaskan');
+    if(why.length) needHelp.push({nama:r.nama || '(tanpa nama)', kelas:r.kelas || '-', why});
   });
 
-  // Hapus Chart Lama
-  if (chartInstances.mood) chartInstances.mood.destroy();
-  if (chartInstances.pemahaman) chartInstances.pemahaman.destroy();
-  if (chartInstances.support) chartInstances.support.destroy();
-
-  // Render Chart 1: Perasaan
-  chartInstances.mood = new Chart(document.getElementById('moodChart'), {
-    type: 'pie',
-    data: {
-      labels: Object.keys(moodCounts),
-      datasets: [{ data: Object.values(moodCounts), backgroundColor: ['#10b981','#3b82f6','#9ca3af','#f59e0b','#ef4444'] }]
-    }
+  /* --- Grafik --- */
+  charts.mood = new Chart($('moodChart'), {
+    type:'pie',
+    data:{labels:Object.keys(mood), datasets:[{data:Object.values(mood), backgroundColor:['#10b981','#3b82f6','#9ca3af','#f59e0b','#ef4444']}]},
+    options:{plugins:{legend:{position:'bottom'}}}
+  });
+  charts.support = new Chart($('supportChart'), {
+    type:'doughnut',
+    data:{labels:Object.keys(sup), datasets:[{data:Object.values(sup), backgroundColor:['#0f766e','#14b8a6','#f4b942','#f87171']}]},
+    options:{plugins:{legend:{position:'bottom'}}}
+  });
+  const lvColor = {'Sangat paham':'#0f766e','Paham':'#14b8a6','Mulai paham':'#f4b942','Belum paham':'#ef4444'};
+  charts.pemahaman = new Chart($('pemahamanChart'), {
+    type:'bar',
+    data:{labels:ts.map(t => t.label), datasets:LEVELS.map(l => ({label:l, data:ts.map(t => t.c[l]), backgroundColor:lvColor[l]}))},
+    options:{indexAxis:'y', scales:{x:{stacked:true, beginAtZero:true, ticks:{stepSize:1}}, y:{stacked:true}}, plugins:{legend:{position:'bottom'}}}
+  });
+  charts.conf = new Chart($('confChart'), {
+    type:'bar',
+    data:{labels:Object.keys(conf), datasets:[{label:'Jumlah siswa', data:Object.values(conf), backgroundColor:['#0f766e','#14b8a6','#f4b942','#ef4444']}]},
+    options:{plugins:{legend:{display:false}}, scales:{y:{beginAtZero:true, ticks:{stepSize:1}}}}
+  });
+  charts.habit = new Chart($('habitChart'), {
+    type:'bar',
+    data:{labels:Object.keys(habit), datasets:[{label:'Jumlah siswa', data:Object.values(habit), backgroundColor:'#0f766e'}]},
+    options:{indexAxis:'y', plugins:{legend:{display:false}}, scales:{x:{beginAtZero:true, ticks:{stepSize:1}}}}
   });
 
-  // Render Chart 2: Pemahaman Kurang
-  chartInstances.pemahaman = new Chart(document.getElementById('pemahamanChart'), {
-    type: 'bar',
-    data: {
-      labels: Object.keys(lowUnderstanding),
-      datasets: [{ label: 'Jumlah Siswa Perlu Pendampingan Tambahan', data: Object.values(lowUnderstanding), backgroundColor: '#0f766e' }]
-    },
-    options: { scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } } }
-  });
+  /* --- Rekomendasi otomatis --- */
+  const happy = mood['Sangat senang'] + mood['Senang'];
+  const confused = mood['Bingung'] + mood['Masih kesulitan'];
+  const need = {}; ts.forEach(t => need[t.label] = t.c['Mulai paham'] + t.c['Belum paham']);
+  const worst = topKeys(need);
+  const priority = ts.filter(t => (need[t.label] / total) >= 0.4).map(t => t.label);
+  const topSup = topKeys(sup);
+  const supAnswered = Object.values(sup).reduce((a,b) => a + b, 0);
 
-  // Render Chart 3: Dukungan
-  chartInstances.support = new Chart(document.getElementById('supportChart'), {
-    type: 'doughnut',
-    data: {
-      labels: Object.keys(supportCounts),
-      datasets: [{ data: Object.values(supportCounts), backgroundColor: ['#0f766e','#14b8a6','#f4b942','#f87171'] }]
-    }
-  });
+  let h = '<ul class="action-list">';
+  h += `<li><strong>Kondisi umum:</strong> dari <strong>${total} siswa</strong>, <strong>${happy} siswa (${Math.round(happy/total*100)}%)</strong> merasa senang terhadap pembelajaran IPA dan <strong>${confused} siswa</strong> merasa bingung atau masih kesulitan.</li>`;
 
-  // GENERATE KESIMPULAN & TINDAK LANJUT OTOMATIS
-  let highestLowTopic = Object.keys(lowUnderstanding).reduce((a, b) => lowUnderstanding[a] > lowUnderstanding[b] ? a : b);
-  let topSupport = Object.keys(supportCounts).reduce((a, b) => supportCounts[a] > supportCounts[b] ? a : b);
-  let confusedCount = moodCounts['Bingung'] + moodCounts['Masih kesulitan'];
-
-  let recommendations = `<ul class="action-list">`;
-  recommendations += `<li><strong>Kondisi Umum Kelas:</strong> Dari total <strong>${total} siswa</strong> yang mengisi refleksi, sebanyak <strong>${moodCounts['Sangat senang'] + moodCounts['Senang']} siswa (${Math.round(((moodCounts['Sangat senang'] + moodCounts['Senang'])/total)*100)}%)</strong> merasa senang dan positif terhadap pembelajaran IPA.</li>`;
-  
-  if (confusedCount > 0) {
-    recommendations += `<li><strong>Fokus Penguatan/Remedi:</strong> Terdapat <strong>${confusedCount} siswa</strong> yang masih merasa bingung/kesulitan. Sub-materi yang paling banyak membutuhkan penguatan adalah <strong>Sub-Bab ${highestLowTopic}</strong> (${lowUnderstanding[highestLowTopic]} siswa belum sepenuhnya paham).</li>`;
-  } else {
-    recommendations += `<li><strong>Fokus Penguatan/Remedi:</strong> Seluruh siswa sudah memiliki dasar pemahaman yang sangat baik.</li>`;
+  if(worst.length){
+    const n = need[worst[0]];
+    h += `<li><strong>Fokus penguatan:</strong> topik yang paling banyak membutuhkan penguatan adalah <strong>${esc(worst.join(' dan '))}</strong> (${n} siswa, ${Math.round(n/total*100)}%, masih "Mulai paham" atau "Belum paham").`;
+    if(priority.length) h += ` Topik berprioritas (≥40% siswa): ${esc(priority.join(', '))}.`;
+    h += '</li>';
+  }else{
+    h += '<li><strong>Fokus penguatan:</strong> tidak ada siswa yang menilai dirinya "Mulai paham" atau "Belum paham" pada kelima topik.</li>';
   }
 
-  recommendations += `<li><strong>Strategi Pembelajaran Berikutnya:</strong> Berdasarkan kebutuhan terbanyak siswa, guru disarankan menyiapkan strategi berupa <strong>"${topSupport}"</strong> pada pertemuan berikutnya.</li>`;
-  recommendations += `<li><strong>Rekomendasi Tindak Lanjut Guru (Aksi Nyata):</strong>
-    <ul>
-      <li>Memberikan umpan balik positif terhadap komitmen kebiasaan sehat yang telah dituliskan siswa.</li>
-      <li>Mengadakan sesi pengulangan singkat (mini-remedial/diskusi kelompok sebaya) khusus pada konsep <em>${highestLowTopic}</em>.</li>
-      <li>Memanfaatkan media berupa <em>${topSupport}</em> agar retensi pemahaman materi sistem organ lebih optimal.</li>
-    </ul>
-  </li>`;
-  recommendations += `</ul>`;
+  if(topSup.length && supAnswered){
+    h += `<li><strong>Strategi pembelajaran berikutnya:</strong> kebutuhan dukungan terbanyak adalah <strong>${esc(topSup.join(' dan '))}</strong> (${sup[topSup[0]]} dari ${supAnswered} siswa yang menjawab).</li>`;
+  }
 
-  document.getElementById('actionRecommendation').innerHTML = recommendations;
+  if(needHelp.length){
+    const shown = needHelp.slice(0,15).map(s => `${esc(s.nama)} (${esc(s.kelas)}: ${esc(s.why.join(', '))})`).join('; ');
+    h += `<li><strong>Siswa yang perlu pendampingan (${needHelp.length}):</strong> ${shown}${needHelp.length > 15 ? '; dan ' + (needHelp.length - 15) + ' siswa lainnya' : ''}.</li>`;
+  }else{
+    h += '<li><strong>Siswa yang perlu pendampingan:</strong> tidak ada siswa yang memenuhi kriteria (bingung/kesulitan, ≥2 topik belum paham, atau belum yakin menjelaskan).</li>';
+  }
+
+  h += '<li><strong>Aksi nyata yang disarankan:</strong><ul>';
+  h += '<li>Memberi umpan balik positif atas komitmen kebiasaan sehat yang ditulis siswa.</li>';
+  if(worst.length) h += `<li>Mengadakan sesi pengulangan singkat atau diskusi kelompok sebaya untuk topik <em>${esc(worst.join(', '))}</em>.</li>`;
+  if(topSup.length && supAnswered) h += `<li>Menyiapkan <em>${esc(topSup.join(' / '))}</em> pada pertemuan berikutnya.</li>`;
+  if(needHelp.length) h += '<li>Menghubungi atau mendampingi siswa dalam daftar pendampingan secara individual.</li>';
+  h += '</ul></li></ul>';
+  $('actionRecommendation').innerHTML = h;
 }
 
-document.getElementById('downloadBtn').addEventListener('click', () => alert("Menyiapkan unduhan..."));
-document.getElementById('printBtn').addEventListener('click', () => window.print());
+/* ============ EKSPOR CSV ============ */
+function csvCell(v){
+  let s = Array.isArray(v) ? v.join('; ') : String(v ?? '');
+  if(/^[=+\-@\t\r]/.test(s)) s = "'" + s;
+  return '"' + s.replace(/"/g, '""') + '"';
+}
+
+$('csvBtn').addEventListener('click', () => {
+  const recs = filtered();
+  if(!recs.length){ alert('Tidak ada data untuk diekspor.'); return; }
+  const head = ['No','Waktu kirim','Tanggal refleksi','Nama','Kelas','Kelompok','Perasaan','Hal paling menarik',
+    ...TOPICS.map(t => 'Pemahaman - ' + t.label),
+    'Paling dipahami','Membingungkan','Cara mengatasi kesulitan','Hubungan kehidupan sehari-hari',
+    'Kebiasaan sehat','Komitmen','Dukungan dibutuhkan','Pesan untuk guru','Keyakinan menjelaskan'];
+  const rows = recs.map((r,i) => [
+    i+1,
+    r.createdAt && r.createdAt.toDate ? r.createdAt.toDate().toLocaleString('id-ID') : '',
+    r.tanggalRefleksi, r.nama, r.kelas, r.kelompok, r.perasaanBelajar, r.halPalingMenarik,
+    ...TOPICS.map(t => lvl(r.pemahaman && r.pemahaman[t.key])),
+    r.halPalingDipahami, r.materiMembingungkan, r.strategiKesulitan, r.hubunganSehari,
+    r.kebiasaanSehat, r.komitmenSehat, r.dukunganDibutuhkan, r.pesanUntukGuru, r.keyakinan
+  ]);
+  const csv = '\ufeff' + [head, ...rows].map(row => row.map(csvCell).join(',')).join('\r\n');
+  const f = $('kelasFilter').value.replace(/\s+/g,'') || 'SemuaKelas';
+  download('Rekap_LKM8_Refleksi_' + f + '_' + todayLocal() + '.csv', csv, 'text/csv;charset=utf-8');
+});
 </script>
 </body>
 </html>
