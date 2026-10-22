@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0f766e">
+<title>LKM 8 | Refleksi Diri IPA</title>
+<style>
+:root{--ink:#18323b;--muted:#61747b;--teal:#0f766e;--teal2:#14b8a6;--pale:#e9f8f5;--line:#dce8e8;--paper:#fff;--bg:#f2f7f7;--gold:#f4b942;--rose:#fce7e7}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(circle at 8% 0%,#d9f5ef 0,transparent 32%),radial-gradient(circle at 100% 10%,#fff1cf 0,transparent 26%),var(--bg);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--ink);line-height:1.55}
+.wrap{width:min(940px,100% - 28px);margin:28px auto 44px}
+.hero{position:relative;overflow:hidden;background:linear-gradient(125deg,#103c46,#0f766e 68%,#17a895);border-radius:28px;padding:30px;color:white;box-shadow:0 18px 45px #124c4b22}
+.hero:after{content:"";position:absolute;width:240px;height:240px;border:1px solid #ffffff30;border-radius:50%;right:-70px;top:-90px;box-shadow:0 0 0 24px #ffffff0b,0 0 0 50px #ffffff08}
+.kicker{display:inline-flex;gap:8px;align-items:center;background:#ffffff1b;border:1px solid #ffffff30;border-radius:99px;padding:6px 12px;font-size:.78rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
+.hero h1{font-size:clamp(1.8rem,5vw,3rem);line-height:1.08;letter-spacing:-.04em;margin:18px 0 12px;max-width:650px}
+.hero p{color:#e0f7f3;max-width:650px;margin:0;font-size:1rem}
+.hero-meta{display:flex;flex-wrap:wrap;gap:9px;margin-top:22px}
+.pill{padding:7px 11px;border-radius:12px;background:#ffffff14;border:1px solid #ffffff25;font-size:.84rem}
+.intro{display:flex;gap:14px;align-items:flex-start;background:#fff;border:1px solid var(--line);border-radius:18px;padding:17px 19px;margin:18px 0}
+.intro .bulb{flex:0 0 42px;height:42px;display:grid;place-items:center;border-radius:13px;background:#fff4d8;font-size:1.3rem}
+.intro p{margin:0;color:#496169;font-size:.94rem}
+.progressbox{background:white;border:1px solid var(--line);border-radius:16px;padding:14px 17px;margin:18px 0}
+.progressrow{display:flex;justify-content:space-between;gap:10px;font-size:.84rem;font-weight:750;margin-bottom:9px}
+.track{height:8px;background:#e7eeee;border-radius:99px;overflow:hidden}.bar{height:100%;width:0;background:linear-gradient(90deg,var(--teal),var(--teal2));border-radius:99px;transition:width .2s}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:22px;padding:22px;margin:16px 0;box-shadow:0 7px 22px #173c3c08}
+.sectionhead{display:flex;gap:13px;align-items:flex-start;margin-bottom:18px}
+.num{width:42px;height:42px;flex:0 0 42px;display:grid;place-items:center;background:var(--pale);color:var(--teal);font-weight:900;border-radius:14px}
+.sectionhead h2{font-size:1.12rem;line-height:1.25;margin:2px 0 4px;letter-spacing:-.02em}
+.sectionhead p{margin:0;color:var(--muted);font-size:.88rem}
+label.fieldlabel,.question-title{display:block;font-weight:750;font-size:.94rem;margin-bottom:8px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+input[type=text],input[type=date],textarea,select{width:100%;border:1px solid #cfdddd;border-radius:12px;padding:12px 13px;font:inherit;color:var(--ink);background:#fcfefe;outline:none;transition:border .15s,box-shadow .15s}
+input:focus,textarea:focus,select:focus{border-color:var(--teal2);box-shadow:0 0 0 3px #14b8a61c}
+textarea{min-height:94px;resize:vertical}
+.q{padding:16px 0;border-top:1px solid #edf2f2}.q:first-of-type{border-top:0;padding-top:0}.q:last-child{padding-bottom:0}
+.q small{display:block;color:var(--muted);font-weight:450;margin-top:3px}
+.options{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:10px}
+.options.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+.opt{position:relative;display:block;cursor:pointer}
+.opt input{position:absolute;opacity:0;pointer-events:none}
+.opt span{height:100%;min-height:45px;display:flex;align-items:center;justify-content:center;text-align:center;padding:10px 8px;border:1px solid #d7e3e3;border-radius:12px;background:#fbfdfd;font-size:.86rem;transition:.15s}
+.opt input:checked+span{background:var(--pale);border-color:var(--teal);color:#075e57;box-shadow:inset 0 0 0 1px var(--teal);font-weight:800}
+.opt input:focus-visible+span{outline:3px solid #14b8a655;outline-offset:2px}
+.topic{display:grid;grid-template-columns:minmax(0,1fr) minmax(180px,1.1fr);gap:12px;align-items:center;padding:12px 0;border-top:1px solid #edf2f2}
+.topic:first-of-type{border-top:0}.topicname{font-weight:750;font-size:.92rem}.topicname span{display:block;color:var(--muted);font-size:.78rem;font-weight:450}
+.topic select{padding:10px;font-size:.88rem}
+.emojirow{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+.emoji{position:relative}.emoji input{position:absolute;opacity:0}.emoji label{cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:5px;border:1px solid var(--line);border-radius:14px;padding:12px 4px;font-size:.76rem;color:var(--muted);text-align:center;height:100%}.emoji .face{font-size:1.7rem}.emoji input:checked+label{border-color:var(--teal);background:var(--pale);color:#075e57;box-shadow:inset 0 0 0 1px var(--teal)}
+.checkgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.checkitem{display:flex;align-items:flex-start;gap:10px;padding:12px;border:1px solid var(--line);border-radius:12px;background:#fcfefe;font-size:.9rem;cursor:pointer}
+.checkitem input{margin-top:5px;accent-color:var(--teal);width:17px;height:17px;flex:0 0 auto}
+.hint{font-size:.83rem;color:var(--muted);margin:8px 0 0}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px}
+button{border:0;border-radius:13px;padding:13px 17px;font:inherit;font-weight:800;cursor:pointer;transition:transform .15s,filter .15s}
+button:hover{filter:brightness(.97);transform:translateY(-1px)}button:active{transform:translateY(0)}
+.primary{background:var(--teal);color:white;box-shadow:0 7px 16px #0f766e25}.secondary{background:white;border:1px solid #cbdada;color:var(--ink)}.soft{background:#e7f6f3;color:#075e57}
+.status{display:none;margin-top:14px;padding:12px 14px;background:#e9f8f0;border:1px solid #b8e7cc;color:#17613b;border-radius:12px;font-size:.9rem}
+footer{text-align:center;color:var(--muted);font-size:.8rem;padding:20px 10px}
+.required{color:#c2413b}
+@media(max-width:620px){.wrap{width:min(100% - 18px,940px);margin:10px auto 28px}.hero{padding:23px 20px;border-radius:22px}.card{padding:17px;border-radius:18px}.grid2{grid-template-columns:1fr;gap:12px}.options{grid-template-columns:repeat(2,minmax(0,1fr))}.options.three{grid-template-columns:1fr}.topic{grid-template-columns:1fr;gap:7px}.emojirow{gap:5px}.emoji label{padding:10px 2px;font-size:.68rem}.emoji .face{font-size:1.45rem}.checkgrid{grid-template-columns:1fr}.actions button{width:100%}.intro{padding:14px}}
+@media print{body{background:white}.wrap{width:100%;margin:0}.hero{box-shadow:none;print-color-adjust:exact;-webkit-print-color-adjust:exact}.card,.intro,.progressbox{box-shadow:none;break-inside:avoid}.actions,.progressbox{display:none!important}textarea{min-height:60px}input,textarea,select{border:1px solid #aaa!important}.hero:after{display:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="hero">
+    <div class="kicker">🧪 Lembar Kerja Murid • LKM 8</div>
+    <h1>Refleksi Diri<br>Perjalanan Belajar IPA</h1>
+    <p>Berhenti sejenak, lihat kembali apa yang sudah kamu pelajari, dan pikirkan kebiasaan sehat yang ingin kamu lakukan mulai hari ini.</p>
+    <div class="hero-meta">
+      <span class="pill">🏫 SMP Negeri 2 Belang</span>
+      <span class="pill">📘 IPA • Kelas VIII</span>
+      <span class="pill">📅 Tahun Pelajaran 2026/2027</span>
+    </div>
+  </header>
+
+  <div class="intro">
+    <div class="bulb">💡</div>
+    <p><strong>Ingat:</strong> Refleksi bukan ujian dan tidak ada jawaban yang harus dibuat-buat. Jawablah dengan jujur berdasarkan pengalaman belajarmu. Tidak perlu takut salah—yang penting kamu mengenali kemajuan dan hal yang masih perlu ditingkatkan.</p>
+  </div>
+
+  <div class="progressbox" aria-live="polite">
+    <div class="progressrow"><span>Progres pengisian refleksi</span><span id="progressText">0% terisi</span></div>
+    <div class="track"><div class="bar" id="progressBar"></div></div>
+  </div>
+
+  <form id="reflectionForm">
+    <section class="card">
+      <div class="sectionhead"><div class="num">01</div><div><h2>Identitas Murid</h2><p>Isi identitasmu sebelum memulai refleksi.</p></div></div>
+      <div class="grid2">
+        <div><label class="fieldlabel" for="nama">Nama lengkap <span class="required">*</span></label><input id="nama" name="Nama lengkap" type="text" placeholder="Tulis nama lengkapmu" required></div>
+        <div><label class="fieldlabel" for="kelas">Kelas <span class="required">*</span></label><select id="kelas" name="Kelas" required><option value="">Pilih kelas</option><option>VIII A</option><option>VIII B</option><option>VIII C</option><option>Lainnya</option></select></div>
+        <div><label class="fieldlabel" for="tanggal">Tanggal refleksi</label><input id="tanggal" name="Tanggal refleksi" type="date"></div>
+        <div><label class="fieldlabel" for="kelompok">Kelompok (jika ada)</label><input id="kelompok" name="Kelompok" type="text" placeholder="Contoh: Kelompok 3"></div>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="sectionhead"><div class="num">02</div><div><h2>Bagaimana Perasaanmu?</h2><p>Pilih satu jawaban yang paling menggambarkan pengalaman belajarmu.</p></div></div>
+      <div class="q">
+        <div class="question-title">Setelah mempelajari materi-materi ini, bagaimana perasaanmu?</div>
+        <div class="emojirow">
+          <div class="emoji"><input type="radio" id="mood1" name="Perasaan belajar" value="Sangat senang" required><label for="mood1"><span class="face">🤩</span>Sangat senang</label></div>
+          <div class="emoji"><input type="radio" id="mood2" name="Perasaan belajar" value="Senang"><label for="mood2"><span class="face">😊</span>Senang</label></div>
+          <div class="emoji"><input type="radio" id="mood3" name="Perasaan belajar" value="Biasa saja"><label for="mood3"><span class="face">😐</span>Biasa saja</label></div>
+          <div class="emoji"><input type="radio" id="mood4" name="Perasaan belajar" value="Bingung"><label for="mood4"><span class="face">🤔</span>Bingung</label></div>
+          <div class="emoji"><input type="radio" id="mood5" name="Perasaan belajar" value="Masih kesulitan"><label for="mood5"><span class="face">😟</span>Masih sulit</label></div>
+        </div>
+      </div>
+      <div class="q">
+        <div class="question-title">Apa yang paling membuatmu tertarik selama pembelajaran?</div>
+        <div class="options three">
+          <label class="opt"><input type="radio" name="Hal paling menarik" value="Diskusi dan kerja kelompok"><span>Diskusi dan kerja kelompok</span></label>
+          <label class="opt"><input type="radio" name="Hal paling menarik" value="Gambar, video, atau media"><span>Gambar, video, atau media</span></label>
+          <label class="opt"><input type="radio" name="Hal paling menarik" value="Contoh dalam kehidupan sehari-hari"><span>Contoh kehidupan sehari-hari</span></label>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="sectionhead"><div class="num">03</div><div><h2>Refleksi Pemahaman Materi</h2><p>Nilai pemahamanmu sendiri dengan jujur. Pilih satu tingkat untuk setiap topik.</p></div></div>
+      <div class="topic"><div class="topicname">🍽️ Isi Piringku dan nilai gizi<span>Memilih makanan beragam dan seimbang.</span></div><select name="Pemahaman - Isi Piringku" required><option value="">Pilih tingkat pemahaman</option><option>Sangat paham — dapat menjelaskan dan memberi contoh</option><option>Paham — dapat menjelaskan secara umum</option><option>Mulai paham — masih perlu latihan</option><option>Belum paham — perlu penjelasan lagi</option></select></div>
+      <div class="topic"><div class="topicname">🥗 Sistem pencernaan<span>Organ pencernaan dan proses pengolahan makanan.</span></div><select name="Pemahaman - Sistem pencernaan" required><option value="">Pilih tingkat pemahaman</option><option>Sangat paham — dapat menjelaskan dan memberi contoh</option><option>Paham — dapat menjelaskan secara umum</option><option>Mulai paham — masih perlu latihan</option><option>Belum paham — perlu penjelasan lagi</option></select></div>
+      <div class="topic"><div class="topicname">❤️ Sistem peredaran darah<span>Jantung, pembuluh darah, dan fungsi darah.</span></div><select name="Pemahaman - Sistem peredaran darah" required><option value="">Pilih tingkat pemahaman</option><option>Sangat paham — dapat menjelaskan dan memberi contoh</option><option>Paham — dapat menjelaskan secara umum</option><option>Mulai paham — masih perlu latihan</option><option>Belum paham — perlu penjelasan lagi</option></select></div>
+      <div class="topic"><div class="topicname">🫁 Sistem pernapasan<span>Jalur udara, pertukaran gas, dan menjaga kesehatan paru-paru.</span></div><select name="Pemahaman - Sistem pernapasan" required><option value="">Pilih tingkat pemahaman</option><option>Sangat paham — dapat menjelaskan dan memberi contoh</option><option>Paham — dapat menjelaskan secara umum</option><option>Mulai paham — masih perlu latihan</option><option>Belum paham — perlu penjelasan lagi</option></select></div>
+      <div class="topic"><div class="topicname">💧 Sistem ekskresi<span>Organ yang membuang zat sisa dan fungsinya.</span></div><select name="Pemahaman - Sistem ekskresi" required><option value="">Pilih tingkat pemahaman</option><option>Sangat paham — dapat menjelaskan dan memberi contoh</option><option>Paham — dapat menjelaskan secara umum</option><option>Mulai paham — masih perlu latihan</option><option>Belum paham — perlu penjelasan lagi</option></select></div>
+    </section>
+
+    <section class="card">
+      <div class="sectionhead"><div class="num">04</div><div><h2>Mengenali Diri sebagai Pembelajar</h2><p>Pikirkan hal yang sudah kamu kuasai dan yang masih perlu diperbaiki.</p></div></div>
+      <div class="q"><label class="question-title" for="bangga">1. Hal apa yang paling kamu pahami atau paling kamu banggakan dari pembelajaran IPA ini?</label><textarea id="bangga" name="Hal yang paling dipahami" placeholder="Saya paling memahami... karena..."></textarea></div>
+      <div class="q"><label class="question-title" for="sulit">2. Materi atau istilah apa yang masih membingungkanmu? Mengapa?</label><textarea id="sulit" name="Materi yang masih membingungkan" placeholder="Saya masih perlu belajar tentang... karena..."></textarea></div>
+      <div class="q"><label class="question-title" for="strategi">3. Apa yang kamu lakukan ketika mengalami kesulitan memahami materi?</label><textarea id="strategi" name="Cara mengatasi kesulitan" placeholder="Contoh: bertanya kepada guru, membaca kembali, berdiskusi..."></textarea></div>
+      <div class="q"><label class="question-title" for="manfaat">4. Hubungan apa yang kamu temukan antara materi IPA ini dan kehidupan sehari-hari?</label><textarea id="manfaat" name="Hubungan dengan kehidupan sehari-hari" placeholder="Contohnya, saya menyadari bahwa..."></textarea></div>
+    </section>
+
+    <section class="card">
+      <div class="sectionhead"><div class="num">05</div><div><h2>Dari Pengetahuan Menjadi Kebiasaan Sehat</h2><p>Centang kebiasaan yang ingin atau sudah kamu lakukan. Pilih sesuai keadaanmu.</p></div></div>
+      <div class="checkgrid">
+        <label class="checkitem"><input type="checkbox" name="Kebiasaan sehat" value="Mengonsumsi makanan beragam dan seimbang"><span>🍽️ Mengonsumsi makanan beragam dan seimbang.</span></label>
+        <label class="checkitem"><input type="checkbox" name="Kebiasaan sehat" value="Minum air putih yang cukup"><span>💧 Minum air putih yang cukup.</span></label>
+        <label class="checkitem"><input type="checkbox" name="Kebiasaan sehat" value="Menjaga kebersihan makanan dan tangan"><span>🧼 Menjaga kebersihan makanan dan tangan.</span></label>
+        <label class="checkitem"><input type="checkbox" name="Kebiasaan sehat" value="Bergerak aktif dan berolahraga"><span>🏃 Bergerak aktif dan berolahraga.</span></label>
+        <label class="checkitem"><input type="checkbox" name="Kebiasaan sehat" value="Menghindari rokok dan asap rokok"><span>🚭 Menghindari rokok dan asap rokok.</span></label>
+        <label class="checkitem"><input type="checkbox" name="Kebiasaan sehat" value="Tidak menahan buang air kecil dan menjaga kebersihan diri"><span>🌿 Menjaga kebersihan diri dan tidak menahan buang air kecil.</span></label>
+      </div>
+      <div class="q" style="margin-top:16px"><label class="question-title" for="komitmen">Tuliskan satu tindakan nyata yang akan kamu mulai atau tingkatkan minggu ini.</label><textarea id="komitmen" name="Komitmen kebiasaan sehat" placeholder="Mulai minggu ini, saya akan..." required></textarea></div>
+    </section>
+
+    <section class="card">
+      <div class="sectionhead"><div class="num">06</div><div><h2>Langkah Berikutnya</h2><p>Refleksi yang baik membantumu menentukan langkah selanjutnya.</p></div></div>
+      <div class="q"><div class="question-title">Dukungan apa yang paling kamu butuhkan agar lebih memahami materi IPA?</div>
+        <div class="options">
+          <label class="opt"><input type="radio" name="Dukungan yang dibutuhkan" value="Penjelasan ulang dari guru"><span>Penjelasan ulang</span></label>
+          <label class="opt"><input type="radio" name="Dukungan yang dibutuhkan" value="Gambar atau video"><span>Gambar atau video</span></label>
+          <label class="opt"><input type="radio" name="Dukungan yang dibutuhkan" value="Latihan soal"><span>Latihan soal</span></label>
+          <label class="opt"><input type="radio" name="Dukungan yang dibutuhkan" value="Diskusi bersama teman"><span>Diskusi bersama teman</span></label>
+        </div>
+      </div>
+      <div class="q"><label class="question-title" for="pesan">Pesan, saran, atau pertanyaan untuk pembelajaran IPA berikutnya (opsional).</label><textarea id="pesan" name="Pesan untuk guru" placeholder="Saya berharap pembelajaran berikutnya..."></textarea></div>
+      <div class="q"><div class="question-title">Seberapa yakin kamu dapat menjelaskan satu hal yang dipelajari kepada orang lain?</div>
+        <div class="options">
+          <label class="opt"><input type="radio" name="Keyakinan menjelaskan" value="Sangat yakin"><span>Sangat yakin</span></label>
+          <label class="opt"><input type="radio" name="Keyakinan menjelaskan" value="Yakin"><span>Yakin</span></label>
+          <label class="opt"><input type="radio" name="Keyakinan menjelaskan" value="Kurang yakin"><span>Kurang yakin</span></label>
+          <label class="opt"><input type="radio" name="Keyakinan menjelaskan" value="Belum yakin"><span>Belum yakin</span></label>
+        </div>
+      </div>
+    </section>
+
+    <div class="card">
+      <strong>🌱 Ingat, setiap orang berkembang dengan kecepatan yang berbeda.</strong>
+      <p class="hint">Kenali kemajuanmu, berani mengakui kesulitan, dan terus mencoba. Refleksi ini adalah kesempatan untuk belajar tentang dirimu sendiri.</p>
+      <div class="actions">
+        <button class="primary" type="submit">✓ Selesaikan Refleksi</button>
+        <button class="secondary" type="button" id="downloadBtn">↓ Unduh Jawaban (.txt)</button>
+        <button class="soft" type="button" id="printBtn">▣ Cetak / Simpan PDF</button>
+        <button class="secondary" type="button" id="resetBtn">↺ Isi Ulang</button>
+      </div>
+      <div class="status" id="status" role="status"></div>
+      <p class="hint">Privasi: jawaban diproses di perangkat ini. Tombol unduh menyimpan jawaban sebagai berkas teks; tombol cetak dapat digunakan untuk menyimpan PDF. Data akan dikirim ke Firebase setelah konfigurasi Firebase diisi dan layanan diaktifkan. Jika koneksi gagal, gunakan unduh jawaban sebagai cadangan.</p>
+    </div>
+  </form>
+  <footer>LKPD Refleksi Diri • IPA Kelas VIII • SMP Negeri 2 Belang<br>Belajar memahami tubuh, menjaga kesehatan, dan mengenali diri.</footer>
+</div>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-app.js";
+import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-auth.js";
+import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-firestore.js";
+
+/*
+  PENTING:
+  1. Ganti nilai placeholder di bawah dengan konfigurasi aplikasi Web Firebase Anda.
+  2. Jangan pernah memasukkan service-account key / private key ke file HTML.
+*/
+const firebaseConfig = {
+  apiKey: "GANTI_DENGAN_API_KEY_FIREBASE",
+  authDomain: "GANTI_DENGAN_PROJECT_ID.firebaseapp.com",
+  projectId: "GANTI_DENGAN_PROJECT_ID",
+  storageBucket: "GANTI_DENGAN_PROJECT_ID.firebasestorage.app",
+  messagingSenderId: "GANTI_DENGAN_MESSAGING_SENDER_ID",
+  appId: "GANTI_DENGAN_APP_ID"
+};
+
+let db = null;
+let firebaseReady = false;
+let firebaseSetupMessage = "";
+try {
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  db = getFirestore(app);
+  if (firebaseConfig.apiKey.startsWith("GANTI_") ||
+      firebaseConfig.projectId.startsWith("GANTI_") ||
+      firebaseConfig.appId.startsWith("GANTI_")) {
+    firebaseSetupMessage = "Firebase belum dikonfigurasi. Isi firebaseConfig terlebih dahulu.";
+  } else {
+    await signInAnonymously(auth);
+    firebaseReady = true;
+  }
+} catch (error) {
+  console.error("Firebase initialization error:", error);
+  firebaseSetupMessage = "Koneksi Firebase belum siap. Periksa konfigurasi dan pengaturan Authentication.";
+}
+
+const form=document.getElementById('reflectionForm');
+const progressBar=document.getElementById('progressBar');
+const progressText=document.getElementById('progressText');
+const statusBox=document.getElementById('status');
+const requiredNames=['Nama lengkap','Kelas','Perasaan belajar','Pemahaman - Isi Piringku','Pemahaman - Sistem pencernaan','Pemahaman - Sistem peredaran darah','Pemahaman - Sistem pernapasan','Pemahaman - Sistem ekskresi','Komitmen kebiasaan sehat'];
+function updateProgress(){
+  const done=requiredNames.filter(n=>{
+    const els=[...form.elements].filter(e=>e.name===n);
+    if(!els.length)return false;
+    if(els[0].type==='radio')return els.some(e=>e.checked);
+    return els.some(e=>String(e.value||'').trim()!=='');
+  }).length;
+  const pct=Math.round(done/requiredNames.length*100);
+  progressBar.style.width=pct+'%';progressText.textContent=pct+'% terisi';
+}
+form.addEventListener('input',updateProgress);
+form.addEventListener('change',updateProgress);
+function collect(){
+  const data={};
+  const fd=new FormData(form);
+  for(const [key,value] of fd.entries()){
+    if(data[key]!==undefined){if(!Array.isArray(data[key]))data[key]=[data[key]];data[key].push(value);}
+    else data[key]=value;
+  }
+  return data;
+}
+function makeText(){
+  const d=collect();
+  const labels={
+    'Nama lengkap':'Nama','Kelas':'Kelas','Tanggal refleksi':'Tanggal','Kelompok':'Kelompok',
+    'Perasaan belajar':'Perasaan belajar','Hal paling menarik':'Hal paling menarik',
+    'Pemahaman - Isi Piringku':'Pemahaman Isi Piringku dan nilai gizi',
+    'Pemahaman - Sistem pencernaan':'Pemahaman Sistem pencernaan',
+    'Pemahaman - Sistem peredaran darah':'Pemahaman Sistem peredaran darah',
+    'Pemahaman - Sistem pernapasan':'Pemahaman Sistem pernapasan',
+    'Pemahaman - Sistem ekskresi':'Pemahaman Sistem ekskresi',
+    'Hal yang paling dipahami':'Hal yang paling dipahami','Materi yang masih membingungkan':'Materi yang masih membingungkan',
+    'Cara mengatasi kesulitan':'Cara mengatasi kesulitan','Hubungan dengan kehidupan sehari-hari':'Hubungan dengan kehidupan sehari-hari',
+    'Kebiasaan sehat':'Kebiasaan sehat yang dipilih','Komitmen kebiasaan sehat':'Komitmen kebiasaan sehat',
+    'Dukungan yang dibutuhkan':'Dukungan yang dibutuhkan','Pesan untuk guru':'Pesan untuk guru',
+    'Keyakinan menjelaskan':'Keyakinan menjelaskan materi'
+  };
+  let out='LKM 8 — REFLEKSI DIRI PEMBELAJARAN IPA\\nSMP NEGERI 2 BELANG | KELAS VIII | TAHUN PELAJARAN 2026/2027\\n'+'='.repeat(56)+'\\n';
+  for(const [key,value] of Object.entries(d))out+='\\n'+(labels[key]||key)+':\\n'+(Array.isArray(value)?value.join(', '):value)+'\\n';
+  out+='\\n'+'='.repeat(56)+'\\nDibuat dari lembar refleksi HTML pada perangkat murid.\\n';
+  return out;
+}
+form.addEventListener('submit', async e=>{
+  e.preventDefault();
+  if(!form.reportValidity())return;
+  statusBox.style.display='block';
+  const submitButton = form.querySelector('button[type="submit"]');
+  submitButton.disabled = true;
+  submitButton.textContent = 'Mengirim...';
+  try {
+    if (!firebaseReady || !db) {
+      throw new Error(firebaseSetupMessage || "Firebase belum siap. Periksa konfigurasi Firebase.");
+    }
+    const d = collect();
+    // Simpan jawaban yang diperlukan untuk rekap guru. Waktu dibuat oleh server.
+    const record = {
+      nama: String(d["Nama lengkap"] || "").trim().slice(0, 120),
+      kelas: String(d["Kelas"] || "").slice(0, 30),
+      tanggalRefleksi: String(d["Tanggal refleksi"] || ""),
+      kelompok: String(d["Kelompok"] || "").trim().slice(0, 80),
+      perasaanBelajar: String(d["Perasaan belajar"] || ""),
+      halPalingMenarik: String(d["Hal paling menarik"] || ""),
+      pemahaman: {
+        isiPiringku: String(d["Pemahaman - Isi Piringku"] || ""),
+        pencernaan: String(d["Pemahaman - Sistem pencernaan"] || ""),
+        peredaranDarah: String(d["Pemahaman - Sistem peredaran darah"] || ""),
+        pernapasan: String(d["Pemahaman - Sistem pernapasan"] || ""),
+        ekskresi: String(d["Pemahaman - Sistem ekskresi"] || "")
+      },
+      halPalingDipahami: String(d["Hal yang paling dipahami"] || "").trim().slice(0, 2000),
+      materiMembingungkan: String(d["Materi yang masih membingungkan"] || "").trim().slice(0, 2000),
+      caraMengatasiKesulitan: String(d["Cara mengatasi kesulitan"] || "").trim().slice(0, 2000),
+      hubunganKehidupan: String(d["Hubungan dengan kehidupan sehari-hari"] || "").trim().slice(0, 2000),
+      kebiasaanSehat: Array.isArray(d["Kebiasaan sehat"]) ? d["Kebiasaan sehat"] : (d["Kebiasaan sehat"] ? [d["Kebiasaan sehat"]] : []),
+      komitmenSehat: String(d["Komitmen kebiasaan sehat"] || "").trim().slice(0, 2000),
+      dukunganDibutuhkan: String(d["Dukungan yang dibutuhkan"] || ""),
+      pesanUntukGuru: String(d["Pesan untuk guru"] || "").trim().slice(0, 2000),
+      keyakinanMenjelaskan: String(d["Keyakinan menjelaskan"] || ""),
+      createdAt: serverTimestamp(),
+      formVersion: "LKM8-v1"
+    };
+    await addDoc(collection(db, "lkm8_refleksi"), record);
+    statusBox.textContent = "Berhasil! Refleksimu sudah tersimpan. Kamu dapat mengunduh salinan jawaban atau mencetaknya.";
+    statusBox.scrollIntoView({behavior:'smooth',block:'center'});
+  } catch (error) {
+    console.error("Gagal menyimpan refleksi:", error);
+    statusBox.textContent = "Jawaban belum berhasil dikirim. " + (error.message || "Periksa koneksi internet dan konfigurasi Firebase, lalu coba lagi. Kamu tetap bisa mengunduh jawaban sebagai cadangan.");
+    statusBox.style.background = "#fff4e5";
+    statusBox.style.borderColor = "#f0d29c";
+    statusBox.style.color = "#7c4a03";
+    statusBox.scrollIntoView({behavior:'smooth',block:'center'});
+  } finally {
+    submitButton.disabled = false;
+    submitButton.textContent = '✓ Selesaikan Refleksi';
+  }
+});
+document.getElementById('downloadBtn').addEventListener('click',()=>{
+  const text=makeText();
+  const blob=new Blob([text],{type:'text/plain;charset=utf-8'});
+  const url=URL.createObjectURL(blob);const a=document.createElement('a');
+  const name=(document.getElementById('nama').value||'Murid').trim().replace(/[^a-z0-9_-]+/gi,'_');
+  a.href=url;a.download='LKM8_Refleksi_'+name+'.txt';document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);
+  statusBox.style.display='block';statusBox.textContent='Berkas jawaban berhasil disiapkan. Periksa folder unduhan pada perangkatmu.';
+});
+document.getElementById('printBtn').addEventListener('click',()=>window.print());
+document.getElementById('resetBtn').addEventListener('click',()=>{
+  if(confirm('Hapus semua jawaban pada formulir ini dan mulai dari awal?')){
+    form.reset();statusBox.style.display='none';updateProgress();window.scrollTo({top:0,behavior:'smooth'});
+  }
+});
+const dateInput=document.getElementById('tanggal');
+if(dateInput&&!dateInput.value){const d=new Date();dateInput.value=new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,10);}
+updateProgress();
+</script>
+</body>
+</html>
