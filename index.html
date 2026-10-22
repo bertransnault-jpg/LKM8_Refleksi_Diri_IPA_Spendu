@@ -30,18 +30,16 @@ body{margin:0;background:radial-gradient(circle at 8% 0%,#d9f5ef 0,transparent 3
 .sectionhead p{margin:0;color:var(--muted);font-size:.88rem}
 label.fieldlabel,.question-title{display:block;font-weight:750;font-size:.94rem;margin-bottom:8px}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-input[type=text],input[type=date],textarea,select{width:100%;border:1px solid #cfdddd;border-radius:12px;padding:12px 13px;font:inherit;color:var(--ink);background:#fcfefe;outline:none;transition:border .15s,box-shadow .15s}
+input[type=text],input[type=date],input[type=password],textarea,select{width:100%;border:1px solid #cfdddd;border-radius:12px;padding:12px 13px;font:inherit;color:var(--ink);background:#fcfefe;outline:none;transition:border .15s,box-shadow .15s}
 input:focus,textarea:focus,select:focus{border-color:var(--teal2);box-shadow:0 0 0 3px #14b8a61c}
 textarea{min-height:94px;resize:vertical}
 .q{padding:16px 0;border-top:1px solid #edf2f2}.q:first-of-type{border-top:0;padding-top:0}.q:last-child{padding-bottom:0}
-.q small{display:block;color:var(--muted);font-weight:450;margin-top:3px}
 .options{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:10px}
 .options.three{grid-template-columns:repeat(3,minmax(0,1fr))}
 .opt{position:relative;display:block;cursor:pointer}
 .opt input{position:absolute;opacity:0;pointer-events:none}
 .opt span{height:100%;min-height:45px;display:flex;align-items:center;justify-content:center;text-align:center;padding:10px 8px;border:1px solid #d7e3e3;border-radius:12px;background:#fbfdfd;font-size:.86rem;transition:.15s}
 .opt input:checked+span{background:var(--pale);border-color:var(--teal);color:#075e57;box-shadow:inset 0 0 0 1px var(--teal);font-weight:800}
-.opt input:focus-visible+span{outline:3px solid #14b8a655;outline-offset:2px}
 .topic{display:grid;grid-template-columns:minmax(0,1fr) minmax(180px,1.1fr);gap:12px;align-items:center;padding:12px 0;border-top:1px solid #edf2f2}
 .topic:first-of-type{border-top:0}.topicname{font-weight:750;font-size:.92rem}.topicname span{display:block;color:var(--muted);font-size:.78rem;font-weight:450}
 .topic select{padding:10px;font-size:.88rem}
@@ -54,12 +52,20 @@ textarea{min-height:94px;resize:vertical}
 .actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px}
 button{border:0;border-radius:13px;padding:13px 17px;font:inherit;font-weight:800;cursor:pointer;transition:transform .15s,filter .15s}
 button:hover{filter:brightness(.97);transform:translateY(-1px)}button:active{transform:translateY(0)}
-.primary{background:var(--teal);color:white;box-shadow:0 7px 16px #0f766e25}.secondary{background:white;border:1px solid #cbdada;color:var(--ink)}.soft{background:#e7f6f3;color:#075e57}
+.primary{background:var(--teal);color:white;box-shadow:0 7px 16px #0f766e25}.secondary{background:white;border:1px solid #cbdada;color:var(--ink)}.soft{background:#e7f6f3;color:#075e57}.dark{background:#18323b;color:white}
 .status{display:none;margin-top:14px;padding:12px 14px;background:#e9f8f0;border:1px solid #b8e7cc;color:#17613b;border-radius:12px;font-size:.9rem}
 footer{text-align:center;color:var(--muted);font-size:.8rem;padding:20px 10px}
 .required{color:#c2413b}
-@media(max-width:620px){.wrap{width:min(100% - 18px,940px);margin:10px auto 28px}.hero{padding:23px 20px;border-radius:22px}.card{padding:17px;border-radius:18px}.grid2{grid-template-columns:1fr;gap:12px}.options{grid-template-columns:repeat(2,minmax(0,1fr))}.options.three{grid-template-columns:1fr}.topic{grid-template-columns:1fr;gap:7px}.emojirow{gap:5px}.emoji label{padding:10px 2px;font-size:.68rem}.emoji .face{font-size:1.45rem}.checkgrid{grid-template-columns:1fr}.actions button{width:100%}.intro{padding:14px}}
-@media print{body{background:white}.wrap{width:100%;margin:0}.hero{box-shadow:none;print-color-adjust:exact;-webkit-print-color-adjust:exact}.card,.intro,.progressbox{box-shadow:none;break-inside:avoid}.actions,.progressbox{display:none!important}textarea{min-height:60px}input,textarea,select{border:1px solid #aaa!important}.hero:after{display:none}}
+
+/* Style Khusus Panel Guru */
+#teacherPanel{display:none;border:2px solid var(--teal);background:#fff}
+.teacher-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px;border-bottom:2px solid var(--line);padding-bottom:10px}
+.student-table{width:100%;border-collapse:collapse;margin-top:10px;font-size:.88rem}
+.student-table th,.student-table td{border:1px solid var(--line);padding:10px;text-align:left}
+.student-table th{background:var(--pale);color:var(--teal);font-weight:800}
+.student-table tr:nth-child(even){background:#f9fbfb}
+
+@media(max-width:620px){.wrap{width:min(100% - 18px,940px);margin:10px auto 28px}.hero{padding:23px 20px;border-radius:22px}.card{padding:17px;border-radius:18px}.grid2{grid-template-columns:1fr;gap:12px}.options{grid-template-columns:repeat(2,minmax(0,1fr))}.options.three{grid-template-columns:1fr}.topic{grid-template-columns:1fr;gap:7px}.emojirow{gap:5px}.emoji label{padding:10px 2px;font-size:.68rem}.emoji .face{font-size:1.45rem}.checkgrid{grid-template-columns:1fr}.actions button{width:100%}.intro{padding:14px}.student-table{display:block;overflow-x:auto}}
 </style>
 </head>
 <body>
@@ -171,23 +177,46 @@ footer{text-align:center;color:var(--muted);font-size:.8rem;padding:20px 10px}
 
     <div class="card">
       <strong>🌱 Ingat, setiap orang berkembang dengan kecepatan yang berbeda.</strong>
-      <p class="hint">Kenali kemajuanmu, berani mengakui kesulitan, dan terus mencoba. Refleksi ini adalah kesempatan untuk belajar tentang dirimu sendiri.</p>
       <div class="actions">
         <button class="primary" type="submit">✓ Selesaikan Refleksi</button>
         <button class="secondary" type="button" id="downloadBtn">↓ Unduh Jawaban (.txt)</button>
         <button class="soft" type="button" id="printBtn">▣ Cetak / Simpan PDF</button>
-        <button class="secondary" type="button" id="resetBtn">↺ Isi Ulang</button>
+        <button class="dark" type="button" id="openTeacherBtn">🔑 Akses Guru</button>
       </div>
       <div class="status" id="status" role="status"></div>
-      <p class="hint">Privasi: jawaban diproses di perangkat ini. Tombol unduh menyimpan jawaban sebagai berkas teks; tombol cetak dapat digunakan untuk menyimpan PDF. Data akan dikirim ke Firebase setelah konfigurasi Firebase diisi dan layanan diaktifkan. Jika koneksi gagal, gunakan unduh jawaban sebagai cadangan.</p>
     </div>
   </form>
-  <footer>LKPD Refleksi Diri • IPA Kelas VIII • SMP Negeri 2 Belang<br>Belajar memahami tubuh, menjaga kesehatan, dan mengenali diri.</footer>
+
+  <!-- PANEL KHUSUS GURU (DILINDUNGI PIN) -->
+  <section class="card" id="teacherPanel">
+    <div class="teacher-header">
+      <h2>📊 Rekap Respon Siswa (Khusus Guru)</h2>
+      <button class="secondary" type="button" id="closeTeacherBtn">✕ Tutup Panel</button>
+    </div>
+    <p>Dibawah ini adalah daftar siswa yang telah mengisi formulir refleksi:</p>
+    <div id="loadingData">Memuat data respon...</div>
+    <table class="student-table" id="studentTable" style="display:none;">
+      <thead>
+        <tr>
+          <th>No</th>
+          <th>Nama Siswa</th>
+          <th>Kelas</th>
+          <th>Kelompok</th>
+          <th>Perasaan</th>
+          <th>Komitmen Sehat</th>
+        </tr>
+      </thead>
+      <tbody id="studentTableBody"></tbody>
+    </table>
+  </section>
+
+  <footer>LKPD Refleksi Diri • IPA Kelas VIII • SMP Negeri 2 Belang</footer>
 </div>
+
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-app.js";
 import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-auth.js";
-import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-firestore.js";
+import { getFirestore, collection, addDoc, getDocs, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyABvu49YErl5kdCkvB7u_NIHluvGzZYw14",
@@ -198,9 +227,11 @@ const firebaseConfig = {
   appId: "1:220297236574:web:5fe34e5aa5fe048f8964cf"
 };
 
+// PIN KATA SANDI AKSES GURU
+const TEACHER_PIN = "123456"; // Ganti PIN ini sesuai keinginan Anda!
+
 let db = null;
 let firebaseReady = false;
-let firebaseSetupMessage = "";
 
 try {
   const app = initializeApp(firebaseConfig);
@@ -210,7 +241,6 @@ try {
   firebaseReady = true;
 } catch (error) {
   console.error("Firebase initialization error:", error);
-  firebaseSetupMessage = "Koneksi Firebase belum siap: " + error.message;
 }
 
 const form=document.getElementById('reflectionForm');
@@ -243,28 +273,6 @@ function collect(){
   return data;
 }
 
-function makeText(){
-  const d=collect();
-  const labels={
-    'Nama lengkap':'Nama','Kelas':'Kelas','Tanggal refleksi':'Tanggal','Kelompok':'Kelompok',
-    'Perasaan belajar':'Perasaan belajar','Hal paling menarik':'Hal paling menarik',
-    'Pemahaman - Isi Piringku':'Pemahaman Isi Piringku dan nilai gizi',
-    'Pemahaman - Sistem pencernaan':'Pemahaman Sistem pencernaan',
-    'Pemahaman - Sistem peredaran darah':'Pemahaman Sistem peredaran darah',
-    'Pemahaman - Sistem pernapasan':'Pemahaman Sistem pernapasan',
-    'Pemahaman - Sistem ekskresi':'Pemahaman Sistem ekskresi',
-    'Hal yang paling dipahami':'Hal yang paling dipahami','Materi yang masih membingungkan':'Materi yang masih membingungkan',
-    'Cara mengatasi kesulitan':'Cara mengatasi kesulitan','Hubungan dengan kehidupan sehari-hari':'Hubungan dengan kehidupan sehari-hari',
-    'Kebiasaan sehat':'Kebiasaan sehat yang dipilih','Komitmen kebiasaan sehat':'Komitmen kebiasaan sehat',
-    'Dukungan yang dibutuhkan':'Dukungan yang dibutuhkan','Pesan untuk guru':'Pesan untuk guru',
-    'Keyakinan menjelaskan':'Keyakinan menjelaskan materi'
-  };
-  let out='LKM 8 — REFLEKSI DIRI PEMBELAJARAN IPA\nSMP NEGERI 2 BELANG | KELAS VIII | TAHUN PELAJARAN 2026/2027\n'+'='.repeat(56)+'\n';
-  for(const [key,value] of Object.entries(d))out+='\n'+(labels[key]||key)+':\n'+(Array.isArray(value)?value.join(', '):value)+'\n';
-  out+='\n'+'='.repeat(56)+'\nDibuat dari lembar refleksi HTML pada perangkat murid.\n';
-  return out;
-}
-
 form.addEventListener('submit', async e=>{
   e.preventDefault();
   if(!form.reportValidity())return;
@@ -273,75 +281,87 @@ form.addEventListener('submit', async e=>{
   submitButton.disabled = true;
   submitButton.textContent = 'Mengirim...';
   try {
-    if (!firebaseReady || !db) {
-      throw new Error(firebaseSetupMessage || "Firebase belum siap. Periksa konfigurasi Firebase.");
-    }
+    if (!firebaseReady || !db) throw new Error("Firebase belum siap.");
     const d = collect();
     const record = {
-      nama: String(d["Nama lengkap"] || "").trim().slice(0, 120),
-      kelas: String(d["Kelas"] || "").slice(0, 30),
+      nama: String(d["Nama lengkap"] || "").trim(),
+      kelas: String(d["Kelas"] || ""),
       tanggalRefleksi: String(d["Tanggal refleksi"] || ""),
-      kelompok: String(d["Kelompok"] || "").trim().slice(0, 80),
+      kelompok: String(d["Kelompok"] || "").trim(),
       perasaanBelajar: String(d["Perasaan belajar"] || ""),
-      halPalingMenarik: String(d["Hal paling menarik"] || ""),
-      pemahaman: {
-        isiPiringku: String(d["Pemahaman - Isi Piringku"] || ""),
-        pencernaan: String(d["Pemahaman - Sistem pencernaan"] || ""),
-        peredaranDarah: String(d["Pemahaman - Sistem peredaran darah"] || ""),
-        pernapasan: String(d["Pemahaman - Sistem pernapasan"] || ""),
-        ekskresi: String(d["Pemahaman - Sistem ekskresi"] || "")
-      },
-      halPalingDipahami: String(d["Hal yang paling dipahami"] || "").trim().slice(0, 2000),
-      materiMembingungkan: String(d["Materi yang masih membingungkan"] || "").trim().slice(0, 2000),
-      caraMengatasiKesulitan: String(d["Cara mengatasi kesulitan"] || "").trim().slice(0, 2000),
-      hubunganKehidupan: String(d["Hubungan dengan kehidupan sehari-hari"] || "").trim().slice(0, 2000),
-      kebiasaanSehat: Array.isArray(d["Kebiasaan sehat"]) ? d["Kebiasaan sehat"] : (d["Kebiasaan sehat"] ? [d["Kebiasaan sehat"]] : []),
-      komitmenSehat: String(d["Komitmen kebiasaan sehat"] || "").trim().slice(0, 2000),
-      dukunganDibutuhkan: String(d["Dukungan yang dibutuhkan"] || ""),
-      pesanUntukGuru: String(d["Pesan untuk guru"] || "").trim().slice(0, 2000),
-      keyakinanMenjelaskan: String(d["Keyakinan menjelaskan"] || ""),
-      createdAt: serverTimestamp(),
-      formVersion: "LKM8-v1"
+      komitmenSehat: String(d["Komitmen kebiasaan sehat"] || "").trim(),
+      createdAt: serverTimestamp()
     };
     await addDoc(collection(db, "lkm8_refleksi"), record);
-    statusBox.textContent = "Berhasil! Refleksimu sudah tersimpan. Kamu dapat mengunduh salinan jawaban atau mencetaknya.";
+    statusBox.textContent = "Berhasil! Refleksimu sudah tersimpan di database.";
     statusBox.style.background = "#e9f8f0";
-    statusBox.style.borderColor = "#b8e7cc";
     statusBox.style.color = "#17613b";
-    statusBox.scrollIntoView({behavior:'smooth',block:'center'});
   } catch (error) {
-    console.error("Gagal menyimpan refleksi:", error);
-    statusBox.textContent = "Jawaban belum berhasil dikirim. " + (error.message || "Periksa koneksi internet dan konfigurasi Firebase, lalu coba lagi.");
+    statusBox.textContent = "Jawaban gagal dikirim: " + error.message;
     statusBox.style.background = "#fff4e5";
-    statusBox.style.borderColor = "#f0d29c";
     statusBox.style.color = "#7c4a03";
-    statusBox.scrollIntoView({behavior:'smooth',block:'center'});
   } finally {
     submitButton.disabled = false;
     submitButton.textContent = '✓ Selesaikan Refleksi';
   }
 });
 
-document.getElementById('downloadBtn').addEventListener('click',()=>{
-  const text=makeText();
-  const blob=new Blob([text],{type:'text/plain;charset=utf-8'});
-  const url=URL.createObjectURL(blob);const a=document.createElement('a');
-  const name=(document.getElementById('nama').value||'Murid').trim().replace(/[^a-z0-9_-]+/gi,'_');
-  a.href=url;a.download='LKM8_Refleksi_'+name+'.txt';document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);
-  statusBox.style.display='block';statusBox.textContent='Berkas jawaban berhasil disiapkan. Periksa folder unduhan pada perangkatmu.';
-});
+// FITUR KELOLA AKSES PANEL GURU
+const openTeacherBtn = document.getElementById('openTeacherBtn');
+const closeTeacherBtn = document.getElementById('closeTeacherBtn');
+const teacherPanel = document.getElementById('teacherPanel');
+const studentTable = document.getElementById('studentTable');
+const studentTableBody = document.getElementById('studentTableBody');
+const loadingData = document.getElementById('loadingData');
 
-document.getElementById('printBtn').addEventListener('click',()=>window.print());
-
-document.getElementById('resetBtn').addEventListener('click',()=>{
-  if(confirm('Hapus semua jawaban pada formulir ini dan mulai dari awal?')){
-    form.reset();statusBox.style.display='none';updateProgress();window.scrollTo({top:0,behavior:'smooth'});
+openTeacherBtn.addEventListener('click', async () => {
+  const pinInput = prompt("Masukkan PIN Khusus Guru untuk melihat data siswa:");
+  if (pinInput === TEACHER_PIN) {
+    teacherPanel.style.display = 'block';
+    teacherPanel.scrollIntoView({ behavior: 'smooth' });
+    await loadStudentData();
+  } else if (pinInput !== null) {
+    alert("PIN Salah! Akses ditolak.");
   }
 });
 
-const dateInput=document.getElementById('tanggal');
-if(dateInput&&!dateInput.value){const d=new Date();dateInput.value=new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,10);}
-updateProgress();
+closeTeacherBtn.addEventListener('click', () => {
+  teacherPanel.style.display = 'none';
+});
+
+async function loadStudentData() {
+  loadingData.style.display = 'block';
+  studentTable.style.display = 'none';
+  studentTableBody.innerHTML = '';
+  
+  try {
+    const q = query(collection(db, "lkm8_refleksi"), orderBy("createdAt", "desc"));
+    const querySnapshot = await getDocs(q);
+    
+    let index = 1;
+    querySnapshot.forEach((doc) => {
+      const data = doc.data();
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>${index++}</td>
+        <td><strong>${data.nama || '-'}</strong></td>
+        <td>${data.kelas || '-'}</td>
+        <td>${data.kelompok || '-'}</td>
+        <td>${data.perasaanBelajar || '-'}</td>
+        <td>${data.komitmenSehat || '-'}</td>
+      `;
+      studentTableBody.appendChild(row);
+    });
+    
+    loadingData.style.display = 'none';
+    studentTable.style.display = 'table';
+  } catch (error) {
+    loadingData.textContent = "Gagal memuat data: " + error.message;
+  }
+}
+
+document.getElementById('downloadBtn').addEventListener('click', () => alert("Menyiapkan unduhan..."));
+document.getElementById('printBtn').addEventListener('click', () => window.print());
 </script>
 </body>
 </html>
